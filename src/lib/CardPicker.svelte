@@ -19,9 +19,9 @@
 <style>
 	div {
         display: flex ;
-        flex-wrap: wrap;
+        flex-grow: 1 1 0;
         width: calc(100% - 20px);
-        max-width: 922px;
+        max-width: 1000px;
         gap: 8px;
 	}
     :global(#cards:hover > .card::after) {
