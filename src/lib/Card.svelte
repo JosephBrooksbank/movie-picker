@@ -7,13 +7,27 @@
 		x: mousePos.x - rect.x,
 		y: mousePos.y - rect.y
 	};
+
+	const handleClick = (event: any) => {
+		console.log("clicked!");
+	}
 </script>
 
 <div bind:this={self} class="card" style="--mouse-x:{m.x}px; --mouse-y:{m.y}px">
-	<div class="card-content" />
+	<div class="card-content" on:click={handleClick} >
+        <img src="https://xl.movieposterdb.com/05_06/2002/0303461/xl_25331_0303461_66463996.jpg"/>
+    </div>
 </div>
 
 <style>
+
+    img {
+        object-fit: cover;
+        aspect-ratio: 67.5/100;
+        width: 100%;
+        border-radius: 10px;
+        opacity: 0.8;
+    }
 	.card {
 		--card-color: rgba(255, 255, 255, 0.1);
 		cursor: pointer;
@@ -24,6 +38,7 @@
 		position: relative;
 		padding: 1px;
 		transition: transform 500ms ease, box-shadow 400ms ease-in-out;
+        margin: 1px;
 	}
 
 	.card:hover {
@@ -54,6 +69,7 @@
 			transparent 40%
 		);
 		z-index: 3;
+		pointer-events: none;
 	}
 
 	/* Border glow effect */
@@ -64,6 +80,7 @@
 			transparent 40%
 		);
 		z-index: 1;
+		pointer-events: none;
 	}
 
 	.card:hover::before {
