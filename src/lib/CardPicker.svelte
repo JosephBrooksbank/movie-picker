@@ -20,8 +20,8 @@
 	div {
         display: flex ;
         flex-grow: 1 1 0;
-        width: calc(100% - 20px);
-        max-width: 1000px;
+        /* width: calc(100% - 20px);  */
+		width: 100%;
         gap: 8px;
 	}
     :global(#cards:hover > .card::after) {
