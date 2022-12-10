@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/Card.svelte';
 	import CardPicker from '$lib/CardPicker.svelte';
-	import Search from '$lib/Search.svelte';
+	import Search from '$lib/Search/Search.svelte';
 </script>
 
 	<Search />
