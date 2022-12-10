@@ -20,9 +20,9 @@
 	div {
         display: flex ;
         flex-grow: 1 1 0;
-        /* width: calc(100% - 20px);  */
 		width: 100%;
         gap: 8px;
+		justify-content: center;
 	}
     :global(#cards:hover > .card::after) {
         opacity: 1;
