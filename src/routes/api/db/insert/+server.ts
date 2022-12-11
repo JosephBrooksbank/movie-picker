@@ -4,6 +4,5 @@ import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({request}) => {
     const response =await insert(await request.json());
-    console.log(response);
     return json(response);
 }

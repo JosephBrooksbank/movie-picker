@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Card from '$lib/Card.svelte';
-	import CardPicker from '$lib/CardPicker.svelte';
+	import Card from '$lib/CardPicker/Card.svelte';
+	import CardPicker from '$lib/CardPicker/CardPicker.svelte';
 	import Search from '$lib/Search/Search.svelte';
 </script>
 

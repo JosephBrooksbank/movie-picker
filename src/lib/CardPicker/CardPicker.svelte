@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { json } from '@sveltejs/kit';
 	import Card from './Card.svelte';
-	import {fade} from 'svelte/transition';
+	import VoteButton from './VoteButton.svelte';
 	let choices = [{ title: 'firefly' }, { title: 'jack reacher' }, { title: 'hot fuzz' }];
 	let selected: string | null = null;
 
@@ -18,6 +19,30 @@
 			selected = choice.title;
 		}
 	};
+
+	const handleVoteClick = async () => {
+		const selectedObject = choices.find(c => c.title === selected)
+		const date = new Date();
+		const day = date.getDay();
+		const fromMonday = date.getDate() - day + (day == 0 ? -6 : 1); // sunday is 0 day according to date
+		date.setDate(fromMonday);
+		const body = {
+			weekVoted: date.toLocaleDateString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'}),
+			movieInfo: selectedObject
+		}
+
+		const response = await fetch('/api/db/insert', {
+			method: 'POST',
+			body: JSON.stringify(body)
+		});
+
+		if (response.ok) {
+			selected = null;
+			// TODO stop voting multiple times
+			// TODO animation on button click
+			// TODO indicator when already voted
+		}
+	}
 </script>
 
 <div id="cards" on:mousemove={handleMouseMove}>
@@ -26,9 +51,7 @@
 	{/each}
 </div>
 {#if selected}
-	<button id="submit" transition:fade={{duration: 100}}>
-		Vote for {selected}
-	</button>
+	<VoteButton {selected} on:click={handleVoteClick}/>
 {/if}
 
 <style>
@@ -39,23 +62,6 @@
 		justify-content: space-between;
 	}
 
-	#submit {
-		width: 100%;
-		border-radius: 5px;
-		border: none;
-		font-size: 16pt;
-		padding: 10px;
-		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-		background-color: #3ba55c;
-		opacity: 0.8;
-		color: azure;
-		cursor: pointer;
-		transition: all 500ms;
-	}
-
-	#submit:hover {
-		opacity: 1;
-	}
 	/* need to affect styles in individual card components for cool border-hover effect */
 	:global(#cards:hover > .card::after) {
 		opacity: 1;
