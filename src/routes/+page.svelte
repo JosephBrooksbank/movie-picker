@@ -4,11 +4,13 @@
 	import Search from '$lib/Search/Search.svelte';
 </script>
 
-<div>
+<div id="outer-container">
+<div id="inner-container">
 	<h1>Movie Picker!</h1>
 	<p>Vote on which movie we should watch next week :)</p>
 	<Search />
 	<CardPicker />
+</div>
 </div>
 
 <style>
@@ -16,16 +18,17 @@
 		--bg-color: #282c34;
 		background-color: var(--bg-color);
 	}
-	div {
-		gap: 10px;
-		align-items: center;
+	#outer-container {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+	#inner-container {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		height: 100%;
-		margin: 0px;
-		overflow: visible;
-		padding: 0px;
+		width: 100%;
+		max-width: 50%;
+		gap: 8px;
 	}
 	h1 {
 		text-align: center;
