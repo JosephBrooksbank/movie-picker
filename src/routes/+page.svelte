@@ -4,10 +4,10 @@
 	import Search from '$lib/Search/Search.svelte';
 </script>
 
-	<Search />
 <div>
 	<h1>Movie Picker!</h1>
 	<p>Vote on which movie we should watch next week :)</p>
+	<Search />
 	<CardPicker />
 </div>
 

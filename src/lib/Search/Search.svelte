@@ -1,65 +1,94 @@
 <script lang="ts">
 	import Result from './Result.svelte';
-    const SEARCH_WAIT = 300;
+	import SearchBar from './SearchBar.svelte';
+	import { slide } from 'svelte/transition';
 
 	let value: string;
-	var delayTimer: NodeJS.Timeout;
+	let success = false;
 	let results: Record<any, any>[] = [];
 
-	$: handleSearch(value);
-
-	const handleSearch = (value: string) => {
-		clearTimeout(delayTimer);
-		delayTimer = setTimeout(() => {
-			searchMovies(value);
-		}, SEARCH_WAIT);
-	};
+	$: searchMovies(value);
+	// TODO arrow navigation
 
 	const searchMovies = async (searchTerm: string) => {
 		if (searchTerm == null || searchTerm === '') {
 			results = [];
 			return;
 		}
-
 		const body = {
 			URL: `/search/movie?query=${encodeURIComponent(searchTerm)}`
 		};
-
 		const data = await fetch('/api/tmdb', {
 			method: 'POST',
 			body: JSON.stringify(body)
 		});
 		results = (await data.json()).results;
 	};
+
+	const handleResultClicked = async (event: CustomEvent) => {
+		const body = {
+			...event.detail,
+			dateAdded: Date.now(),
+			priority: 2
+		}
+
+		const response = await fetch('/api/db/insert', {
+			method: 'POST',
+			body: JSON.stringify(body)
+		});
+		results = [];
+		if (response.ok) {
+			success = true;
+			setTimeout(() => success = false, 3000)
+		}
+	};
 </script>
 
-<input bind:value />
+<div id="container">
+<SearchBar bind:value {success}/>
 {#if results.length > 0}
-	<div id="search-results">
-		{#each results as result}
-			<Result title={result.title} posterPath={result.poster_path} />
+	<ul id="search-results" transition:slide>
+		{#key value}
+		{#each results as result (result.id)}
+			<Result {result} on:click={handleResultClicked}/>
 		{/each}
-	</div>
+		{/key}
+	</ul>
 {/if}
+</div>
 
 <!-- <pre>
     {JSON.stringify(results, null, 2)}
 </pre> -->
 <style>
-	input {
-		width: 100%;
-		border-radius: 5px;
+	#container {
+		min-width: 30%;
+		min-height: 50px;
+		position: relative;
+		z-index: 100;
 	}
 
 	#search-results {
-		width: 100%;
+		max-height: 30vh;
+		box-sizing: border-box;
 		position: absolute;
+		padding: 0;
+		z-index: 1000;
+		overflow: hidden;
+		overflow-y: scroll;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-start;
+		margin: 0;
+		margin-top:-6px;
+		border-radius: 0 0 24px 24px;
+		padding-bottom: 10px;
+		background-color: #202225;
 		gap: 5px;
-		background-color: white;
-		border-radius: 10px;
-		padding: 5px;
-		z-index: 1000;
+	}
+
+	#search-results::-webkit-scrollbar {
+		display: none;
 	}
 </style>
