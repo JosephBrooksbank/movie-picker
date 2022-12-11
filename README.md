@@ -1,38 +1,8 @@
-# create-svelte
+# Movie Picker
+My friends and I have a semi-weekly movie night. This is a little website as a fun way to vote on what movie to watch next week
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+# How to run locally
+* clone the project
+* run `yarn install`
+* run `yarn dev`
+* website is now running at `localhost:5173`. You'll need to get a TMDB API key and copy `.env.example` to `.env` and fill in the APi key before it'll be useful, though.
