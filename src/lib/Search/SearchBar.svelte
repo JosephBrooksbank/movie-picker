@@ -53,7 +53,7 @@
 		grid-column: 1;
 	}
 	#success-icon {
-		color: green;
+		color: #3BA55C;
 	}
 	#search-icon {
 		color: rgb(107, 106, 106);

@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let mousePos: { x: number; y: number };
+	export let selected: boolean = false;
 	let self: any;
 
 	$: rect = self?.getBoundingClientRect() ?? { x: 0, y: 0 };
@@ -7,19 +8,19 @@
 		x: mousePos.x - rect.x,
 		y: mousePos.y - rect.y
 	};
-
-	const handleClick = (event: any) => {
-		console.log("clicked!");
-	}
 </script>
 
-<div bind:this={self} class="card" style="--mouse-x:{m.x}px; --mouse-y:{m.y}px">
-	<div class="card-content" on:click={handleClick} >
-        <img src="https://xl.movieposterdb.com/05_06/2002/0303461/xl_25331_0303461_66463996.jpg"/>
+<div bind:this={self} class='card {selected? 'selected' : ''}' style="--mouse-x:{m.x}px; --mouse-y:{m.y}px">
+	<div class="card-content" on:click>
+        <img src="https://xl.movieposterdb.com/05_06/2002/0303461/xl_25331_0303461_66463996.jpg" draggable="false"/>
     </div>
 </div>
 
 <style>
+
+	.selected {
+		background-color: #3BA55C !important; 
+	}
 
     img {
         object-fit: cover;
@@ -34,10 +35,9 @@
 		border-radius: 10px;
 		background-color: var(--card-color);
 		aspect-ratio: 67.5 / 100;
-		width: 300px;
 		position: relative;
 		padding: 1px;
-		transition: transform 500ms ease, box-shadow 400ms ease-in-out;
+		transition: transform 500ms ease, box-shadow 400ms ease-in-out, background-color 100ms;
         margin: 1px;
 	}
 
