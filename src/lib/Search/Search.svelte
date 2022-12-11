@@ -37,6 +37,7 @@
 			body: JSON.stringify(body)
 		});
 		results = [];
+		value = '';
 		if (response.ok) {
 			success = true;
 			setTimeout(() => success = false, 3000)

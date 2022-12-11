@@ -9,6 +9,7 @@
 
 	let valueWhileTyping: string;
 	$: handleSearch(valueWhileTyping);
+    $: valueWhileTyping = value;
 
 	const handleStoppedTyping = (val: string) => {
 		value = val;
