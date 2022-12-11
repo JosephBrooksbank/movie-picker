@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { json } from '@sveltejs/kit';
+	export let movies: Record<string, any>[];
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
-	let choices = [{ title: 'firefly' }, { title: 'jack reacher' }, { title: 'hot fuzz' }];
-	let selected: string | null = null;
+	let selected: Record<string, any> | null;
 
 	let mousePos = { x: 0, y: 0 };
 
@@ -13,25 +12,24 @@
 	};
 
 	const handleCardClick = (choice: any) => () => {
-		if (selected === choice.title) {
+		if (selected?.id === choice.id) {
 			selected = null;
 		} else {
-			selected = choice.title;
+			selected = choice;
 		}
 	};
 
 	const handleVoteClick = async () => {
-		const selectedObject = choices.find(c => c.title === selected)
 		const date = new Date();
 		const day = date.getDay();
 		const fromMonday = date.getDate() - day + (day == 0 ? -6 : 1); // sunday is 0 day according to date
 		date.setDate(fromMonday);
 		const body = {
 			weekVoted: date.toLocaleDateString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'}),
-			movieInfo: selectedObject
+			movieInfo: selected
 		}
 
-		const response = await fetch('/api/db/insert', {
+		const response = await fetch('/api/db/add/vote', {
 			method: 'POST',
 			body: JSON.stringify(body)
 		});
@@ -46,12 +44,12 @@
 </script>
 
 <div id="cards" on:mousemove={handleMouseMove}>
-	{#each choices as choice}
-		<Card {mousePos} on:click={handleCardClick(choice)} selected={selected === choice.title} />
+	{#each movies as movie}
+		<Card {mousePos} on:click={handleCardClick(movie)} selected={selected?.id === movie.id} {movie} />
 	{/each}
 </div>
 {#if selected}
-	<VoteButton {selected} on:click={handleVoteClick}/>
+	<VoteButton selected={selected.title} on:click={handleVoteClick}/>
 {/if}
 
 <style>

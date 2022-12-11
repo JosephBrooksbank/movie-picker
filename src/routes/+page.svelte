@@ -2,6 +2,8 @@
 	import Card from '$lib/CardPicker/Card.svelte';
 	import CardPicker from '$lib/CardPicker/CardPicker.svelte';
 	import Search from '$lib/Search/Search.svelte';
+	import type { PageData } from './$types';
+	export let data: PageData;
 </script>
 
 <div id="outer-container">
@@ -9,7 +11,7 @@
 	<h1>Movie Picker!</h1>
 	<p>Vote on which movie we should watch next week :)</p>
 	<Search />
-	<CardPicker />
+	<CardPicker movies={data.movies} />
 </div>
 </div>
 

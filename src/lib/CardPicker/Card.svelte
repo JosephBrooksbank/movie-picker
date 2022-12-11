@@ -1,6 +1,8 @@
 <script lang="ts">
 	export let mousePos: { x: number; y: number };
 	export let selected: boolean = false;
+	export let movie: Record<string, any>;
+	const imageBase = 'https://image.tmdb.org/t/p/original';
 	let self: any;
 
 	$: rect = self?.getBoundingClientRect() ?? { x: 0, y: 0 };
@@ -12,7 +14,7 @@
 
 <div bind:this={self} class='card {selected? 'selected' : ''}' style="--mouse-x:{m.x}px; --mouse-y:{m.y}px">
 	<div class="card-content" on:click>
-        <img src="https://xl.movieposterdb.com/05_06/2002/0303461/xl_25331_0303461_66463996.jpg" draggable="false"/>
+        <img src={imageBase + movie.poster_path} draggable="false" alt={`A poster for the movie '${movie.title}'`}/>
     </div>
 </div>
 
@@ -39,6 +41,7 @@
 		padding: 1px;
 		transition: transform 500ms ease, box-shadow 400ms ease-in-out, background-color 100ms;
         margin: 1px;
+		width: 100%;
 	}
 
 	.card:hover {

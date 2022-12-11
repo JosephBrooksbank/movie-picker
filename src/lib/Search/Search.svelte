@@ -28,11 +28,11 @@
 	const handleResultClicked = async (event: CustomEvent) => {
 		const body = {
 			...event.detail,
-			dateAdded: Date.now(),
+			dateAdded: new Date().toString(),
 			priority: 2
 		}
 
-		const response = await fetch('/api/db/insert', {
+		const response = await fetch('/api/db/add/movie', {
 			method: 'POST',
 			body: JSON.stringify(body)
 		});
