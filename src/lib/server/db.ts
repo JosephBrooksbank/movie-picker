@@ -1,33 +1,35 @@
-import Datastore from '@seald-io/nedb';
+import { DB_PASSWORD, DB_URL, DB_USER } from '$env/static/private';
+import { MongoClient } from 'mongodb';
+const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/?retryWrites=true&w=majority`;
 
-const loadDb = async (dbName: string) => {
-	const db = new Datastore({ filename: dbName, autoload: true });
-	return db;
+const loadDb = async () => {
+	const client = new MongoClient(uri);
+	await client.connect();
+	return client.db('movie-picker');
 };
 
 export const insertMovie = async (document: object) => {
-	const db = await loadDb('Movies.db');
-
-	return await db.insertAsync(document);
+	const db = await loadDb();
+	return db.collection('movies').insertOne(document);
 };
 
 export const getNextThreeMovies = async () => {
-	const db = await loadDb('Movies.db');
+	const db = await loadDb();
+	const collection = db.collection('movies');
 
-	const movies = await new Promise((resolve, reject) => {
-	 db
-		.findAsync({})
-		.sort({ priority: 1, dateAdded: 1 })
-		.limit(3)
-		.exec((err, docs) => {
-			resolve(docs);
-		});
-	})
-	return movies as Record<string, any>[];
+	const cursor = collection.find().sort({ priority: 1, dateAdded: 1 }).limit(3);
+	console.log(cursor);
+	const movies: any[] = [];
+	await cursor.forEach((obj) => {
+		movies.push(JSON.parse(JSON.stringify(obj)))
+	});
+	console.log(movies);
+	return movies;
 };
 
 export const insertVote = async (document: object) => {
-	const db = await loadDb('Votes.db');
+	const db = await loadDb();
+	const collection = db.collection('votes');
 
-	return await db.insertAsync(document);
+	return await collection.insertOne(document);
 };
