@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from "svelte";
 	import { fly } from 'svelte/transition';
 
-
     export let result: Record<string, any>;
     const {poster_path: posterPath, title, ...rest} = result;
 	const imageBase = 'https://image.tmdb.org/t/p/original';
@@ -14,7 +13,7 @@
 
 </script>
 
-<li on:click={handleClick} in:fly="{{y: -100, duration: 500}}">
+<li on:click={handleClick} in:fly="{{y: -100, duration: 500, delay: 400}}" out:fly="{{y: -100, duration: 400}}">
 	{title}
 	{#if posterPath != null}
 		<img src={imageBase + posterPath} />
