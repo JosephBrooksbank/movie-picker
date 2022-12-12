@@ -13,11 +13,14 @@ export const insertMovie = async (document: Record<string, any>) => {
 	return db.collection('movies').updateOne({id: document.id}, {$setOnInsert: {...document}}, {upsert: true});
 };
 
-export const getNextThreeMovies = async () => {
+export const getMovies = async (limit?: number) => {
 	const db = await loadDb();
 	const collection = db.collection('movies');
 
-	const cursor = collection.find().sort({ priority: 1, dateAdded: 1 }).limit(3);
+	let cursor = collection.find().sort({ priority: 1, dateAdded: 1 });
+	if(limit) {
+		cursor = cursor.limit(limit);
+	}
 	const movies: any[] = [];
 	await cursor.forEach((obj) => {
 		movies.push(JSON.parse(JSON.stringify(obj)))
