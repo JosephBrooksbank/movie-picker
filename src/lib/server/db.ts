@@ -8,9 +8,9 @@ const loadDb = async () => {
 	return client.db('movie-picker');
 };
 
-export const insertMovie = async (document: object) => {
+export const insertMovie = async (document: Record<string, any>) => {
 	const db = await loadDb();
-	return db.collection('movies').insertOne(document);
+	return db.collection('movies').updateOne({id: document.id}, {$setOnInsert: {...document}}, {upsert: true});
 };
 
 export const getNextThreeMovies = async () => {
