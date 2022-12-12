@@ -29,7 +29,7 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: 50%;
+		max-width: min(95%, 1000px);
 		gap: 8px;
 	}
 	h1 {
