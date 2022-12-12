@@ -17,7 +17,7 @@ export const getMovies = async (limit?: number) => {
 	const db = await loadDb();
 	const collection = db.collection('movies');
 
-	let cursor = collection.find().sort({ priority: 1, dateAdded: 1 });
+	let cursor = collection.find().sort({ priority: 1, dateAdded: -1 });
 	if(limit) {
 		cursor = cursor.limit(limit);
 	}
@@ -36,3 +36,13 @@ export const insertVote = async (document: Record<string, any>) => {
 
 	return await collection.updateOne({id: document.id}, {$inc: {votes: 1}} );
 };
+
+export const updateMovies = async (documents: Record<string, any>[]) => {
+	const db = await loadDb();
+	const collection = db.collection('movies');
+	for (const doc of documents) {
+		collection.updateOne({id: doc.id}, {$set: {votes: doc.votes, priority: doc.priority}})
+	}
+
+	return await getMovies();
+}
