@@ -34,12 +34,7 @@
 			const fromMonday = date.getDate() - day + (day == 0 ? -6 : 1); // sunday is 0 day according to date
 			date.setDate(fromMonday);
 			const body = {
-				weekVoted: date.toLocaleDateString('en-us', {
-					year: 'numeric',
-					month: '2-digit',
-					day: '2-digit'
-				}),
-				movieInfo: selected
+				...selected
 			};
 
 			const response = await fetch('/api/db/add/vote', {
@@ -57,9 +52,6 @@
 					JSON.stringify(previousVote)
 				);
 				selected = null;
-				// TODO stop voting multiple times
-				// TODO animation on button click
-				// TODO indicator when already voted
 			}
 		}
 	};

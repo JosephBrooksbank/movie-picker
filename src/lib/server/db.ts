@@ -10,7 +10,7 @@ const loadDb = async () => {
 
 export const insertMovie = async (document: Record<string, any>) => {
 	const db = await loadDb();
-	return db.collection('movies').updateOne({id: document.id}, {$setOnInsert: {...document}}, {upsert: true});
+	return db.collection('movies').updateOne({id: document.id}, {$setOnInsert: {...document, votes: 0}}, {upsert: true});
 };
 
 export const getMovies = async (limit?: number) => {
@@ -28,9 +28,11 @@ export const getMovies = async (limit?: number) => {
 	return movies;
 };
 
-export const insertVote = async (document: object) => {
-	const db = await loadDb();
-	const collection = db.collection('votes');
 
-	return await collection.insertOne(document);
+export const insertVote = async (document: Record<string, any>) => {
+	const db = await loadDb();
+	const collection = db.collection('movies');
+	console.log(document);
+
+	return await collection.updateOne({id: document.id}, {$inc: {votes: 1}} );
 };
