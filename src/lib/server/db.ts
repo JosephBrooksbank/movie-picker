@@ -18,12 +18,10 @@ export const getNextThreeMovies = async () => {
 	const collection = db.collection('movies');
 
 	const cursor = collection.find().sort({ priority: 1, dateAdded: 1 }).limit(3);
-	console.log(cursor);
 	const movies: any[] = [];
 	await cursor.forEach((obj) => {
 		movies.push(JSON.parse(JSON.stringify(obj)))
 	});
-	console.log(movies);
 	return movies;
 };
 

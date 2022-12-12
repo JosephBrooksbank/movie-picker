@@ -1,28 +1,58 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	export let selected: string | null;
+	export let alreadyVoted: boolean = false;
 </script>
 
-<button id="submit" transition:fade={{ duration: 100 }} on:click>
-	Vote for {selected}
-</button>
+<div class='container'>
+
+{#if alreadyVoted}
+	<div class="submit closed">
+		Already voted
+		<i class="fa-solid fa-circle-check" />
+	</div>
+{:else if selected}
+	<button class="submit open" transition:fade={{ duration: 100 }} on:click>
+		Vote for {selected}
+	</button>
+{/if}
+</div>
 
 <style>
-	#submit {
+
+	.container {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+	}
+
+	.container > * {
+		grid-row: 1;
+		grid-column: 1;
+	}
+	.submit {
 		width: 100%;
 		border-radius: 5px;
 		border: none;
 		font-size: 16pt;
 		padding: 10px;
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-		background-color: #3ba55c;
 		opacity: 0.8;
-		color: azure;
-		cursor: pointer;
-		transition: all 500ms;
+		/* transition: background-color 500ms; */
 	}
 
-	#submit:hover {
+	.open {
+		cursor: pointer;
+		color: azure;
+		background-color: #3ba55c;
+	}
+	.closed {
+		background-color: #2f3136;
+		color: azure;
+		text-align: center;
+	}
+
+	.submit:hover {
 		opacity: 1;
 	}
 </style>
