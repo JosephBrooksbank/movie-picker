@@ -27,7 +27,6 @@
 		}
 	});
 
-	$: console.log(previousVote);
 	const handleVoteClick = async () => {
 		if (selected) {
 			const date = new Date();
