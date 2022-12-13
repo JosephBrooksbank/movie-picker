@@ -1,14 +1,16 @@
 import { DB_PASSWORD, DB_URL, DB_USER } from '$env/static/private';
 import { MongoClient } from 'mongodb';
+import type { IMovie } from 'src/schema/movie.schema';
 const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/?retryWrites=true&w=majority`;
 
 const loadDb = async () => {
+	// const db = await mongoose.connect(uri)
 	const client = new MongoClient(uri);
 	await client.connect();
 	return client.db('movie-picker');
 };
 
-export const insertMovie = async (document: Record<string, any>) => {
+export const insertMovie = async (document: IMovie) => {
 	const db = await loadDb();
 	return db.collection('movies').updateOne({id: document.id}, {$setOnInsert: {...document, votes: 0}}, {upsert: true});
 };
@@ -21,7 +23,7 @@ export const getMovies = async (limit?: number) => {
 	if(limit) {
 		cursor = cursor.limit(limit);
 	}
-	const movies: any[] = [];
+	const movies: IMovie[] = [];
 	await cursor.forEach((obj) => {
 		movies.push(JSON.parse(JSON.stringify(obj)))
 	});
@@ -29,7 +31,7 @@ export const getMovies = async (limit?: number) => {
 };
 
 
-export const insertVote = async (document: Record<string, any>) => {
+export const insertVote = async (document: IMovie) => {
 	const db = await loadDb();
 	const collection = db.collection('movies');
 	console.log(document);
@@ -37,7 +39,7 @@ export const insertVote = async (document: Record<string, any>) => {
 	return await collection.updateOne({id: document.id}, {$inc: {votes: 1}} );
 };
 
-export const updateMovies = async (documents: Record<string, any>[]) => {
+export const updateMovies = async (documents: IMovie[]) => {
 	const db = await loadDb();
 	const collection = db.collection('movies');
 	for (const doc of documents) {

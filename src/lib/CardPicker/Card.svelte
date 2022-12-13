@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { IMovie } from "src/schema/movie.schema";
 	export let mousePos: { x: number; y: number };
 	export let selected: boolean = false;
-	export let movie: Record<string, any>;
+	export let movie: IMovie;
 	const imageBase = 'https://image.tmdb.org/t/p/original';
 	let self: any;
 

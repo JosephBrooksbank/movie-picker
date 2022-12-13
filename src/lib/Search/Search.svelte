@@ -2,10 +2,11 @@
 	import Result from './Result.svelte';
 	import SearchBar from './SearchBar.svelte';
 	import { slide } from 'svelte/transition';
+	import type {Movie, MovieSearchReponse} from 'src/types/TMDB';
 
 	let value: string;
 	let success = false;
-	let results: Record<any, any>[] = [];
+	let results: Movie[];
 
 	$: searchMovies(value);
 	// TODO arrow navigation
@@ -18,11 +19,11 @@
 		const body = {
 			URL: `/search/movie?query=${encodeURIComponent(searchTerm)}`
 		};
-		const data = await fetch('/api/tmdb', {
+		const response = await fetch('/api/tmdb', {
 			method: 'POST',
 			body: JSON.stringify(body)
 		});
-		results = (await data.json()).results;
+		results = (await response.json() as MovieSearchReponse).results;
 	};
 
 	const handleResultClicked = async (event: CustomEvent) => {

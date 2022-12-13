@@ -1,9 +1,10 @@
 <script lang="ts">
+	import type { Movie } from "src/types/TMDB";
 	import { createEventDispatcher } from "svelte";
 	import { fly } from 'svelte/transition';
 
-    export let result: Record<string, any>;
-    const {poster_path: posterPath, title, ...rest} = result;
+    export let result: Movie;
+    const {poster_path: posterPath, title } = result;
 	const imageBase = 'https://image.tmdb.org/t/p/original';
 
 	const dispatch = createEventDispatcher();

@@ -1,10 +1,17 @@
 <script lang="ts">
-	export let movies: Record<string, any>[];
+	import type { IMovie } from 'src/schema/movie.schema';
+	export let movies: IMovie[];
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
-	let previousVote: Record<string, string> = {};
-	let selected: Record<string, any> | null;
+
+	interface ILocalStorageVote {
+		movieId?: number,
+		dateVoted?: Date
+	}
+
+	let previousVote: ILocalStorageVote = {};
+	let selected: IMovie | null;
 
 	let mousePos = { x: 0, y: 0 };
 
@@ -44,8 +51,8 @@
 
 			if (response.ok) {
 				 previousVote = {
-					id: selected.id,
-					voteTime: new Date().toString()
+					movieId: selected.id,
+					dateVoted: new Date()
 				}
 				localStorage.setItem(
 					'vote',
@@ -69,7 +76,7 @@
 		/>
 	{/each}
 </div>
-<VoteButton selected={selected?.title} on:click={handleVoteClick} alreadyVoted={movies.some(m => m.id === previousVote.id)} />
+<VoteButton selected={selected?.title} on:click={handleVoteClick} alreadyVoted={movies.some(m => m.id === previousVote.movieId)} />
 
 <style>
 	#cards {

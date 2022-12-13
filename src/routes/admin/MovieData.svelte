@@ -1,7 +1,8 @@
 <script lang="ts">
 	import MoviePoster from '$lib/MoviePoster.svelte';
+	import type { IMovie } from 'src/schema/movie.schema';
 
-	export let movie: Record<string, any>;
+	export let movie: IMovie;
 </script>
 
 <div id="container">

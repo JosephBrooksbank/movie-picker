@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	export let selected: string | null;
+	export let selected: string | null | undefined;
 	export let alreadyVoted: boolean = false;
 </script>
 
