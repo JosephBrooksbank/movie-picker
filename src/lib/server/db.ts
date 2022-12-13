@@ -1,10 +1,9 @@
 import { DB_PASSWORD, DB_URL, DB_USER } from '$env/static/private';
 import { MongoClient } from 'mongodb';
-import type { IMovie } from 'src/schema/movie.schema';
+import type { IMovie } from '$lib/schema/movie.schema';
 const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/?retryWrites=true&w=majority`;
 
 const loadDb = async () => {
-	// const db = await mongoose.connect(uri)
 	const client = new MongoClient(uri);
 	await client.connect();
 	return client.db('movie-picker');
@@ -19,7 +18,7 @@ export const getMovies = async (limit?: number) => {
 	const db = await loadDb();
 	const collection = db.collection('movies');
 
-	let cursor = collection.find().sort({ priority: 1, dateAdded: -1 });
+	let cursor = collection.find().sort({ priority: 1, dateAdded: 1 });
 	if(limit) {
 		cursor = cursor.limit(limit);
 	}
