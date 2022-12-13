@@ -1,4 +1,4 @@
-export type Movie = {
+export type TMDBMovie = {
     id: number,
     adult: boolean,
     backdrop_path: string,
@@ -17,7 +17,7 @@ export type Movie = {
 
 export type MovieSearchReponse = {
     page: number,
-    results: Movie[],
+    results: TMDBMovie[],
     total_pages: number,
     total_results: number
 }

@@ -2,11 +2,11 @@
 	import Result from './Result.svelte';
 	import SearchBar from './SearchBar.svelte';
 	import { slide } from 'svelte/transition';
-	import type {Movie, MovieSearchReponse} from 'src/types/TMDB';
+	import type {TMDBMovie, MovieSearchReponse} from 'src/types/TMDB';
 
 	let value: string;
 	let success = false;
-	let results: Movie[];
+	let results: TMDBMovie[];
 
 	$: searchMovies(value);
 	// TODO arrow navigation
