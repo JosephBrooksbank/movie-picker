@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 export interface IMovie {
     id: number,
@@ -39,3 +39,5 @@ export const movieSchema = new Schema<IMovie>({
     vote_count: Number, // TMDB votes
     votes: Number
 })
+
+export const Movie = model('Movie', movieSchema);
