@@ -1,18 +1,25 @@
 <script lang="ts">
-	import Card from '$lib/CardPicker/Card.svelte';
 	import CardPicker from '$lib/CardPicker/CardPicker.svelte';
 	import Search from '$lib/Search/Search.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
+	import dayjs from 'dayjs';
+	import relativeTime from 'dayjs/plugin/relativeTime';
+	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
+	dayjs.extend(relativeTime);
+	const nextEvent = dayjs(data.nextParty.date);
 </script>
 
 <div id="outer-container">
-<div id="inner-container">
-	<h1>Movie Picker!</h1>
-	<p>Vote on which movie we should watch next week :)</p>
-	<Search />
-	<CardPicker movies={data.movies} />
-</div>
+	<div id="inner-container">
+		<h1>Movie Picker!</h1>
+		<p>Vote on which movie we should watch next week :)</p>
+		<Search />
+		<CardPicker movies={data.movies} />
+		<p>
+			Next Event in <CountdownClock countdownDate={nextEvent} />
+		</p>
+	</div>
 </div>
 
 <style>

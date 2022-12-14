@@ -4,7 +4,11 @@ import { DB_PASSWORD, DB_URL, DB_USER } from "$env/static/private";
 import type { TMDBMovie } from "src/types/TMDB";
 
 const mongooseUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/movie-picker`;
-await mongoose.connect(mongooseUri);
+
+export const loadDb = async () => {
+    mongoose.connect(mongooseUri);
+}
+await loadDb();
 
 export const createMovie = async(document: TMDBMovie) => {
     // Adding movie if it doesn't exist

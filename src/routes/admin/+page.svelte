@@ -1,24 +1,33 @@
 <script lang="ts">
-	import { prevent_default } from 'svelte/internal';
-import MovieData from './MovieData.svelte';
+	import MovieData from './MovieData.svelte';
 
 	export let data: import('./$types').PageData;
 
-	const handleSubmit = async () => {
+	const handleMoviesSubmit = async () => {
 		const response = await fetch('/api/db/update/movie', {
 			method: 'POST',
 			body: JSON.stringify(data.movies)
-		})
-		console.log(await response.json())
-	}
+		});
+		console.log(await response.json());
+	};
 
+	const handleNewEvent = async (event: SubmitEvent) => {
+		console.log(event.target.value);
+	}
 </script>
 
 <h1>Admin Settings</h1>
 
-<form method="POST" on:submit|preventDefault={handleSubmit}>
-	<div id='button-row'>
-	<button>Save</button>
+<h2>Add Event</h2>
+<form method="POST" action="?/newEvent">
+	<input type='submit' style='display: none'>
+	Day of event: <input type="date" name="date" />
+</form>
+
+<h2>Movie settings</h2>
+<form method="POST" on:submit|preventDefault={handleMoviesSubmit}>
+	<div id="button-row">
+		<button>Save</button>
 	</div>
 	<div id="container">
 		{#each data.movies as movie}
