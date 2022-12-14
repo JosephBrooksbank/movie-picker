@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import MovieData from './MovieData.svelte';
 
 	export let data: import('./$types').PageData;
@@ -11,13 +12,21 @@
 		console.log(await response.json());
 	};
 
+	const handleDelete = async (event: CustomEvent<{ movieId: string }>) => {
+		const response = await fetch('/api/db/delete/movie', {
+			method: 'POST',
+			body: JSON.stringify({ id: event.detail.movieId })
+		});
+
+		invalidateAll();
+	};
 </script>
 
 <h1>Admin Settings</h1>
 
 <h2>Add Event</h2>
 <form method="POST" action="?/newEvent">
-	<input type='submit' style='display: none'>
+	<input type="submit" style="display: none" />
 	Day of event: <input type="date" name="date" />
 </form>
 
@@ -28,7 +37,7 @@
 	</div>
 	<div id="container">
 		{#each data.movies as movie}
-			<MovieData bind:movie />
+			<MovieData bind:movie on:delete={handleDelete} />
 		{/each}
 	</div>
 </form>
@@ -62,7 +71,7 @@
 
 	#container {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		grid-template-rows: auto;
 		row-gap: 15px;
 		justify-items: center;
