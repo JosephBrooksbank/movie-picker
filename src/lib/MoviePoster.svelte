@@ -5,7 +5,7 @@
     export let width: string = "100%";
 </script>
 
-<img src={imageBase + imageUrl} alt={imageAlt} style='width: {width}'/>
+<img src={imageBase + imageUrl} alt={imageAlt} style='width: {width}' draggable="false"/>
 
 <style>
     img {
