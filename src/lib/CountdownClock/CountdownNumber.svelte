@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import { fade, blur,fly, slide, scale, draw, crossfade } from 'svelte/transition';
 
 	export let n: number;
 	export let label: string;
@@ -9,7 +9,7 @@
 <div class="container">
 	<div class="animation-container">
 		{#key n}
-			<p transition:slide>
+			<p in:fly={{y: -50}} out:fly={{y: 50}}>
 				{n}
 			</p>
 		{/key}
@@ -19,7 +19,7 @@
 
 <style>
 	* {
-		font-size: 24px;
+		font-size: min(2.5vmax, 24pt);
 	}
     .container {
         display: flex;
@@ -32,4 +32,9 @@
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
     }
+
+	.animation-container > * {
+		grid-row: 1;
+		grid-column: 1;
+	}
 </style>

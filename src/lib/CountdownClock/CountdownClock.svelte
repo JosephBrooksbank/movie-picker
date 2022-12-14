@@ -50,7 +50,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: 100%;
 	}
 	.time-container {
 		margin: -8px;
