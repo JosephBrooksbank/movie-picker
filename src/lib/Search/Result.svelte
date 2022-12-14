@@ -17,7 +17,7 @@
 <li on:click={handleClick} in:fly="{{y: -100, duration: 500, delay: 400}}" out:fly="{{y: -100, duration: 400}}">
 	{title}
 	{#if posterPath != null}
-		<img src={imageBase + posterPath} />
+		<img src={imageBase + posterPath} alt={title}/>
 	{/if}
 </li>
 

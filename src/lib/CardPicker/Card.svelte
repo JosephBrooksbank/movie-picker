@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { IMovie } from "src/schema/movie.schema";
+	import MoviePoster from "$lib/MoviePoster.svelte";
+import type { IMovie } from "$lib/schema/movie.schema";
 	export let mousePos: { x: number; y: number };
 	export let selected: boolean = false;
 	export let movie: IMovie;
-	const imageBase = 'https://image.tmdb.org/t/p/original';
 	let self: any;
 
 	$: rect = self?.getBoundingClientRect() ?? { x: 0, y: 0 };
@@ -15,7 +15,7 @@
 
 <div bind:this={self} class='card {selected? 'selected' : ''}' style="--mouse-x:{m.x}px; --mouse-y:{m.y}px">
 	<div class="card-content" on:click>
-        <img src={imageBase + movie.poster_path} draggable="false" alt={`A poster for the movie '${movie.title}'`}/>
+		<MoviePoster imageUrl={movie.poster_path} imageAlt={`A poster for the movie '${movie.title}`}/>
     </div>
 </div>
 

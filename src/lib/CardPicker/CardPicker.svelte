@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IMovie } from 'src/schema/movie.schema';
+	import type { IMovie } from  "$lib/schema/movie.schema";
 	export let movies: IMovie[];
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';

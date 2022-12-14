@@ -1,5 +1,5 @@
 <script lang="ts">
-	const imageBase = 'https://image.tmdb.org/t/p/original';
+	const imageBase = 'https://image.tmdb.org/t/p/w500';
     export let imageUrl: string;
     export let imageAlt: string;
     export let width: string = "100%";
