@@ -1,6 +1,5 @@
 <script lang="ts">
     import {createEventDispatcher} from 'svelte';
-	import { fade } from 'svelte/transition';
 	let value: string;
 	const pwd = 'secret';
 
