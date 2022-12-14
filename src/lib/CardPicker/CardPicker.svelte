@@ -6,8 +6,8 @@
 	import VoteButton from './VoteButton.svelte';
 
 	interface ILocalStorageVote {
-		movieId?: number,
-		dateVoted?: Date
+		movieId?: number;
+		dateVoted?: Date;
 	}
 
 	let previousVote: ILocalStorageVote = {};
@@ -36,6 +36,13 @@
 
 	const handleVoteClick = async () => {
 		if (selected) {
+
+			previousVote = {
+				movieId: selected.id,
+				dateVoted: new Date()
+			};
+			localStorage.setItem('vote', JSON.stringify(previousVote));
+
 			const date = new Date();
 			const day = date.getDay();
 			const fromMonday = date.getDate() - day + (day == 0 ? -6 : 1); // sunday is 0 day according to date
@@ -49,21 +56,12 @@
 				body: JSON.stringify(body)
 			});
 
-			if (response.ok) {
-				 previousVote = {
-					movieId: selected.id,
-					dateVoted: new Date()
-				}
-				localStorage.setItem(
-					'vote',
-					JSON.stringify(previousVote)
-				);
-				selected = null;
+			selected = null;
+			if (!response.ok) {
+				// TODO some sort of error handling
 			}
 		}
 	};
-
-
 </script>
 
 <div id="cards" on:mousemove={handleMouseMove}>
@@ -76,7 +74,11 @@
 		/>
 	{/each}
 </div>
-<VoteButton selected={selected?.title} on:click={handleVoteClick} alreadyVoted={movies.some(m => m.id === previousVote.movieId)} />
+<VoteButton
+	selected={selected?.title}
+	on:click={handleVoteClick}
+	alreadyVoted={movies.some((m) => m.id === previousVote.movieId)}
+/>
 
 <style>
 	#cards {

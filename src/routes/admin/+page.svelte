@@ -11,9 +11,6 @@
 		console.log(await response.json());
 	};
 
-	const handleNewEvent = async (event: SubmitEvent) => {
-		console.log(event.target.value);
-	}
 </script>
 
 <h1>Admin Settings</h1>

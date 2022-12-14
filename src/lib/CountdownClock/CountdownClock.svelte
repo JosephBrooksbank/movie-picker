@@ -21,31 +21,37 @@
 </script>
 
 <div class="container">
-	{#if hours > 0}
-		<CountdownNumber n={hours} label={'hour'} />
-	{/if}
-	{#if minutes > 0}
-		<CountdownNumber n={minutes} label={'minute'} />
-	{/if}
-	{#if seconds >= 0}
-		<CountdownNumber n={seconds} label={'second'} />
-	{/if}
-</div>
-
-<div>
-	({countdownDate.format('MMMM D, h:mmA')})
+	<div>Next Event in</div>
+	<div class="time-container">
+		{#if hours > 0}
+			<CountdownNumber n={hours} label={'hour'} />
+		{/if}
+		{#if minutes > 0}
+			<CountdownNumber n={minutes} label={'minute'} />
+		{/if}
+		{#if seconds >= 0}
+			<CountdownNumber n={seconds} label={'second'} />
+		{/if}
+	</div>
+	<div class="full-date">
+		({countdownDate.format('MMMM D, h:mmA')})
+	</div>
 </div>
 
 <style>
 	.container {
+		margin-top: 20px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: 100%;
+	}
+	.time-container {
+		margin: -8px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		gap: 8px;
-	}
-	.animation-container {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr;
 	}
 </style>

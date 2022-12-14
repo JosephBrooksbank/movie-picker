@@ -16,9 +16,7 @@
 		<p>Vote on which movie we should watch next week :)</p>
 		<Search />
 		<CardPicker movies={data.movies} />
-		<p>
-			Next Event in <CountdownClock countdownDate={nextEvent} />
-		</p>
+		<CountdownClock countdownDate={nextEvent} />
 	</div>
 </div>
 

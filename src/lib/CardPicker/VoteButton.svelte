@@ -4,22 +4,25 @@
 	export let alreadyVoted: boolean = false;
 </script>
 
-<div class='container'>
-
-{#if alreadyVoted}
-	<div class="submit closed">
-		Already voted
-		<i class="fa-solid fa-circle-check" />
-	</div>
-{:else if selected}
-	<button class="submit open" transition:fade={{ duration: 100 }} on:click>
-		Vote for {selected}
-	</button>
-{/if}
+<div class="container">
+	{#if alreadyVoted}
+		<div class="submit closed">
+			Already voted
+			<i class="fa-solid fa-circle-check" />
+		</div>
+	{:else if selected}
+		<button class="submit open" transition:fade={{ duration: 100 }} on:click>
+			Vote for {selected}
+		</button>
+	{:else}
+		<div class='space'></div>
+	{/if}
 </div>
 
 <style>
-
+	.space {
+		height: 45px;
+	}
 	.container {
 		display: grid;
 		grid-template-columns: 1fr;
