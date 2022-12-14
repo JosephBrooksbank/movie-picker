@@ -41,13 +41,13 @@
 				<CountdownNumber n={seconds} label={'second'} />
 			{/if}
 		</div>
-		<div class="full-date">
-			(Party happens {eventDate.format('MMMM D, h:mmA')})
-		</div>
 	{/if}
 	{#if winner}
 		<div>Voting Ended!</div>
 	{/if}
+		<div class="full-date">
+			(Party happens {eventDate.format('MMMM D, h:mmA')})
+		</div>
 </div>
 
 <style>
