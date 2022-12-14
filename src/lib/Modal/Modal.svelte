@@ -48,7 +48,7 @@
 	}
     #contents {
         display: flex;
-        width: min(50%, 500px);
+        width: min(50%, 500px, 50vh);
         align-items: center;
         justify-content: center;
         /* transform: translate(-50%, -50%); */
