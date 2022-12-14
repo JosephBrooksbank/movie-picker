@@ -1,14 +1,7 @@
 import { Movie, type IMovie } from "$lib/schema/movie.schema";
-import mongoose from 'mongoose';
-import { DB_PASSWORD, DB_URL, DB_USER } from "$env/static/private";
+import type mongoose from 'mongoose';
 import type { TMDBMovie } from "src/types/TMDB";
 
-const mongooseUri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/movie-picker`;
-
-export const loadDb = async () => {
-    mongoose.connect(mongooseUri);
-}
-await loadDb();
 
 export const createMovie = async(document: TMDBMovie) => {
     // Adding movie if it doesn't exist
@@ -19,4 +12,23 @@ export const createMovie = async(document: TMDBMovie) => {
     const response = await Movie.findOneAndUpdate(query, update, options);
     console.log(JSON.stringify(response));
     return response;
+}
+
+export const getMovies = async (count?: number) => {
+    let query = Movie.find().sort({priority: 1, dateAdded: 1}).lean()
+    if (count) {
+        query = query.limit(count);
+    } 
+    return JSON.parse(JSON.stringify(await query.exec()));
+}
+
+export const updateMovies = async (documents: IMovie[]) => {
+    for (const doc of documents) {
+        Movie.updateOne({id: doc.id}, {$set: {votes: doc.votes, priority: doc.priority}})
+    }
+    return await getMovies();
+}
+
+export const insertVote = async (document: IMovie) => {
+    return await Movie.updateOne({id: document.id}, {$inc: {votes: 1}});
 }

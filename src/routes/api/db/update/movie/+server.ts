@@ -1,4 +1,4 @@
-import { updateMovies } from "$lib/server/db";
+import { updateMovies } from "$lib/server/mongoose";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 

@@ -1,6 +1,5 @@
 import { Party } from '$lib/schema/party.schema';
-import { getMovies } from '$lib/server/db';
-import { loadDb } from '$lib/server/mongoose';
+import { getMovies } from '$lib/server/mongoose';
 import type { Load } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -29,7 +28,6 @@ export const actions: Actions = {
         }
 
         console.log(date);
-		await loadDb();
 		const response = await Party.create({ date });
 		console.log(response);
 	}

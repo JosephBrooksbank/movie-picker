@@ -1,4 +1,4 @@
-import { insertVote } from '$lib/server/db';
+import { insertVote } from '$lib/server/mongoose';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
