@@ -1,4 +1,3 @@
-import { insertMovie } from '$lib/server/db';
 import { createMovie } from '$lib/server/mongoose';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
