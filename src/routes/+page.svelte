@@ -7,7 +7,8 @@
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
 	dayjs.extend(relativeTime);
-	const nextEvent = dayjs(data.nextParty.date);
+	const nextEvent = dayjs(data.partyData.eventDate);
+	const votingEnds = dayjs(data.partyData.votingEnds);
 </script>
 
 <div id="outer-container">
@@ -16,7 +17,7 @@
 		<p>Vote on which movie we should watch next week :)</p>
 		<Search />
 		<CardPicker movies={data.movies} />
-		<CountdownClock countdownDate={nextEvent} />
+		<CountdownClock countdownDate={votingEnds} eventDate={nextEvent} />
 	</div>
 </div>
 

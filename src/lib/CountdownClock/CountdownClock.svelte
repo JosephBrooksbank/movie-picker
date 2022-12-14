@@ -3,8 +3,10 @@
 	import { onMount } from 'svelte';
 	import CountdownNumber from './CountdownNumber.svelte';
 	export let countdownDate: dayjs.Dayjs;
+	export let eventDate: dayjs.Dayjs;
 
 	let time = dayjs();
+	$: days = (time.diff(countdownDate, 'days') *-1);
 	$: hours = (time.diff(countdownDate, 'hours') * -1) % 60;
 	$: minutes = (time.diff(countdownDate, 'minutes') * -1) % 60;
 	$: seconds = (time.diff(countdownDate, 'seconds') * -1) % 60;
@@ -21,8 +23,11 @@
 </script>
 
 <div class="container">
-	<div>Next Event in</div>
+	<div>Voting ends in</div>
 	<div class="time-container">
+		{#if days > 0}
+			<CountdownNumber n={days} label={'day'}/>
+		{/if}
 		{#if hours > 0}
 			<CountdownNumber n={hours} label={'hour'} />
 		{/if}
@@ -34,7 +39,7 @@
 		{/if}
 	</div>
 	<div class="full-date">
-		({countdownDate.format('MMMM D, h:mmA')})
+		(Party happens {eventDate.format('MMMM D, h:mmA')})
 	</div>
 </div>
 
