@@ -14,7 +14,7 @@ export const createMovie = async(document: TMDBMovie) => {
     return response;
 }
 
-export const getMovies = async (count?: number) => {
+export const getMovies: (count?: number) => Promise<IMovie[]> = async (count?: number) => {
     let query = Movie.find().sort({priority: 1, dateAdded: 1}).lean()
     if (count) {
         query = query.limit(count);

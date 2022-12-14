@@ -6,12 +6,23 @@
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
+	import FocusOn from '$lib/Modal/Modal.svelte';
+	import MoviePoster from '$lib/MoviePoster.svelte';
 	dayjs.extend(relativeTime);
 	const nextEvent = dayjs(data.partyData.eventDate);
 	const votingEnds = dayjs(data.partyData.votingEnds);
+	let showModal: boolean = true;
 </script>
 
-<div id="outer-container">
+<FocusOn show={showModal} on:click={() => showModal = false}>
+	<div>
+		<h1>🎊Winner!🎊</h1>
+		<MoviePoster imageUrl={data.movies[0].poster_path} imageAlt={'alt'} width="100%" />
+		<h1>Hot fuzz</h1>
+	</div>
+</FocusOn>
+
+<div id="outer-container" class={showModal ? 'blur' : ''}>
 	<div id="inner-container">
 		<h1>Movie Picker!</h1>
 		<p>Vote on which movie we should watch next week :)</p>
@@ -22,6 +33,9 @@
 </div>
 
 <style>
+	.blur {
+		filter: blur(10px);
+	}
 	:root {
 		--bg-color: #282c34;
 		background-color: var(--bg-color);
@@ -39,6 +53,9 @@
 		gap: 8px;
 	}
 	h1 {
+		text-align: center;
+	}
+	h2 {
 		text-align: center;
 	}
 	p {
