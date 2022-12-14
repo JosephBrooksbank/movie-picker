@@ -20,8 +20,8 @@
 <FocusOn show={showModal} on:click={() => showModal = false}>
 	<div>
 		<h1>🎊Winner!🎊</h1>
-		<MoviePoster imageUrl={data.movies[0].poster_path} imageAlt={'alt'} width="100%" />
-		<h1>Hot fuzz</h1>
+		<MoviePoster imageUrl={data.partyData.winner.poster_path} imageAlt={`Poster for ${data.partyData.winner.title}`} width="100%" />
+		<h1>{data.partyData.winner.title}</h1>
 	</div>
 </FocusOn>
 
