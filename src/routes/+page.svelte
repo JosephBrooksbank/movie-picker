@@ -15,6 +15,9 @@
 		showModal = true;
 	}
 
+	const nextEvent = dayjs(data.partyData.eventDate);
+	const votingEnds = dayjs(data.partyData.votingEnds);
+	dayjs.extend(relativeTime);
 	let auth: boolean = false;
 	onMount(async () => {
 		// No this is not secure. No I don't care.
@@ -22,15 +25,21 @@
 			if (localStorage.getItem('isAuth') === 'true') {
 				auth = true;
 			}
+
+			if (localStorage.getItem('winnerSeen') === nextEvent.toString()) {
+				showModal=false;
+			}
 		}
 	});
-	dayjs.extend(relativeTime);
-	const nextEvent = dayjs(data.partyData.eventDate);
-	const votingEnds = dayjs(data.partyData.votingEnds);
+
+	const handleModalDismiss = () => {
+		showModal = false;
+		localStorage.setItem('winnerSeen', nextEvent.toString());
+	}
 </script>
 
 {#if auth}
-	<Modal show={showModal} on:click={() => (showModal = false)}>
+	<Modal show={showModal} on:click={handleModalDismiss}>
 		<div>
 			<h1>🎊Winner!🎊</h1>
 			<MoviePoster
