@@ -1,21 +1,27 @@
 <script lang="ts">
+	import type { IMovie } from '$lib/schema/movie.schema';
 	import { fade } from 'svelte/transition';
 	export let selected: string | null | undefined;
 	export let alreadyVoted: boolean = false;
+	export let winner: IMovie | null = null;
 </script>
 
 <div class="container">
-	{#if alreadyVoted}
+	{#if alreadyVoted && !winner}
 		<div class="submit closed">
 			Already voted
 			<i class="fa-solid fa-circle-check" />
+		</div>
+	{:else if winner}
+		<div class="submit closed">
+		🎊 Winner: {winner.title} 🎊
 		</div>
 	{:else if selected}
 		<button class="submit open" transition:fade={{ duration: 100 }} on:click>
 			Vote for {selected}
 		</button>
 	{:else}
-		<div class='space'></div>
+		<div class="space" />
 	{/if}
 </div>
 

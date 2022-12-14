@@ -1,12 +1,14 @@
 <script lang="ts">
+	import type { IMovie } from '$lib/schema/movie.schema';
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import CountdownNumber from './CountdownNumber.svelte';
 	export let countdownDate: dayjs.Dayjs;
 	export let eventDate: dayjs.Dayjs;
+	export let winner: IMovie | null = null;
 
 	let time = dayjs();
-	$: days = (time.diff(countdownDate, 'days') *-1);
+	$: days = time.diff(countdownDate, 'days') * -1;
 	$: hours = (time.diff(countdownDate, 'hours') * -1) % 60;
 	$: minutes = (time.diff(countdownDate, 'minutes') * -1) % 60;
 	$: seconds = (time.diff(countdownDate, 'seconds') * -1) % 60;
@@ -23,24 +25,29 @@
 </script>
 
 <div class="container">
-	<div>Voting ends in</div>
-	<div class="time-container">
-		{#if days > 0}
-			<CountdownNumber n={days} label={'day'}/>
-		{/if}
-		{#if hours > 0}
-			<CountdownNumber n={hours} label={'hour'} />
-		{/if}
-		{#if minutes > 0}
-			<CountdownNumber n={minutes} label={'minute'} />
-		{/if}
-		{#if seconds >= 0}
-			<CountdownNumber n={seconds} label={'second'} />
-		{/if}
-	</div>
-	<div class="full-date">
-		(Party happens {eventDate.format('MMMM D, h:mmA')})
-	</div>
+	{#if !winner}
+		<div>Voting ends in</div>
+		<div class="time-container">
+			{#if days > 0}
+				<CountdownNumber n={days} label={'day'} />
+			{/if}
+			{#if hours > 0}
+				<CountdownNumber n={hours} label={'hour'} />
+			{/if}
+			{#if minutes > 0}
+				<CountdownNumber n={minutes} label={'minute'} />
+			{/if}
+			{#if seconds >= 0}
+				<CountdownNumber n={seconds} label={'second'} />
+			{/if}
+		</div>
+		<div class="full-date">
+			(Party happens {eventDate.format('MMMM D, h:mmA')})
+		</div>
+	{/if}
+	{#if winner}
+		<div>Voting Ended!</div>
+	{/if}
 </div>
 
 <style>

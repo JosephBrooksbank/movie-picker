@@ -8,10 +8,13 @@
 	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
 	import FocusOn from '$lib/Modal/Modal.svelte';
 	import MoviePoster from '$lib/MoviePoster.svelte';
+	let showModal: boolean = false;
+	if (data.partyData.winner) {
+		showModal = true;
+	}
 	dayjs.extend(relativeTime);
 	const nextEvent = dayjs(data.partyData.eventDate);
 	const votingEnds = dayjs(data.partyData.votingEnds);
-	let showModal: boolean = true;
 </script>
 
 <FocusOn show={showModal} on:click={() => showModal = false}>
@@ -27,8 +30,8 @@
 		<h1>Movie Picker!</h1>
 		<p>Vote on which movie we should watch next week :)</p>
 		<Search />
-		<CardPicker movies={data.movies} />
-		<CountdownClock countdownDate={votingEnds} eventDate={nextEvent} />
+		<CardPicker movies={data.movies} winner={data.partyData.winner}/>
+		<CountdownClock countdownDate={votingEnds} eventDate={nextEvent} winner={data.partyData.winner}/>
 	</div>
 </div>
 

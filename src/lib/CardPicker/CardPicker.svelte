@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { IMovie } from  "$lib/schema/movie.schema";
 	export let movies: IMovie[];
+	export let winner: IMovie | null = null;
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
+	
 
 	interface ILocalStorageVote {
 		movieId?: number;
@@ -78,6 +80,7 @@
 	selected={selected?.title}
 	on:click={handleVoteClick}
 	alreadyVoted={movies.some((m) => m.id === previousVote.movieId)}
+	winner={winner}
 />
 
 <style>
