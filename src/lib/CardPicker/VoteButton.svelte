@@ -46,7 +46,6 @@
 	.container > * {
 		grid-row: 1;
 		grid-column: 1;
-		outline: solid red 1px;
 		width: fit-content;
 	}
 	.submit {

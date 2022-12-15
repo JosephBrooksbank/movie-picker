@@ -53,7 +53,6 @@
 		justify-content: center;
 		align-items: center;
 		position: fixed;
-		outline: purple solid 1px;
 	}
 	.search-box {
 		width: fit-content;
