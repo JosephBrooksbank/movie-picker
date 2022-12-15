@@ -23,7 +23,7 @@
 	<div class="search-box">
 		<form on:submit={handleSubmit}>
 			<button class="btn-search"><i class="fas fa-lock" /></button>
-			<input bind:value type="password" class="input-search" placeholder="Secret Secret..." />
+			<input bind:value type="password" class="input-search" placeholder="Secret Secret..." autofocus/>
 			<input type="submit" style="display: none" />
 		</form>
 	</div>
