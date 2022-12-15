@@ -4,25 +4,13 @@
 	import type { PageData } from './$types';
 	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
 	import PasswordInput from '$lib/PasswordInput.svelte';
-	import Cookies from 'js-cookie';
-
-	import { onMount } from 'svelte';
 	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
 	export let data: PageData;
-	let { movies, nextParty } = data;
-	nextParty = {};
+	let { movies, nextParty, isAuth } = data;
 	let blur: boolean;
 
-	// Setting up values and then overriding with cookies if necessary
-	let auth: boolean = false;
-
-	onMount(async () => {
-		const cookies = Cookies.get();
-		// No this is not secure. No I don't care.
-		if (cookies.isAuth) {
-			auth = true;
-		}
-	});
+	// Setting up values from cookies
+	let auth: boolean = isAuth === 'true';
 </script>
 
 {#if auth}

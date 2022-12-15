@@ -5,7 +5,7 @@ import { pojo } from '$lib/server/utils';
 import type { Load } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 
-export const load: Load = async () => {
+export const load: Load = async ({cookies}) => {
 	const parties = await Party.find({ date: { $gt: new Date() } })
 		.populate<{ winner?: IMovie }>('winner')
 		.limit(1)
@@ -26,6 +26,7 @@ export const load: Load = async () => {
 
 	return {
 		movies: getMovies(3),
-		nextParty: pojo(nextParty)
+		nextParty: pojo(nextParty),
+		isAuth: cookies.get('isAuth')
 	};
 };
