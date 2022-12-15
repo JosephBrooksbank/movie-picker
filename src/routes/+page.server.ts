@@ -7,43 +7,25 @@ import dayjs from 'dayjs';
 
 export const load: Load = async () => {
 	const parties = await Party.find({ date: { $gt: new Date() } })
+		.populate<{ winner?: IMovie }>('winner')
 		.limit(1)
 		.sort({ date: 1 });
-	if (parties.length > 0) {
-		const nextParty = parties[0];
-		let partyData: {
-			eventDate: Date;
-			winner?: IMovie;
-			votingEnds?: Date;
-		} = {
-			eventDate: nextParty.date
-		};
 
-		// If there is a winner, return that
-		if (nextParty.winner) {
-			partyData.winner = (await Movie.findOne(nextParty.winner)) ?? undefined;
+	const nextParty = parties[0] ?? {};
 
-			// If the voting is over, get a winner
-		} else if (dayjs().toDate() > nextParty.votingEnds) {
+		// If the voting is over and a winner hasn't been chosen, get a winner
+		if (dayjs().toDate() > nextParty.votingEnds && !nextParty?.winner) {
+			console.log('here!');
 			const winner = await Movie.findOne().sort({ votes: 'descending' });
 			if (winner) {
-				nextParty.winner = winner._id;
-				nextParty.save();
-				partyData.winner = winner;
+				console.log('herest')
+				const response = await Party.updateOne({_id: nextParty._id}, {winner: winner._id});
 			}
 			// Voting not over, return voting time
-		} else {
-			partyData = {
-				eventDate: nextParty.date,
-				votingEnds: nextParty.votingEnds
-			};
 		}
-		return {
-			movies: getMovies(3),
-			partyData: pojo(partyData)
-		};
-	}
+
 	return {
-		movies: getMovies(3)
+		movies: getMovies(3),
+		nextParty: pojo(nextParty)
 	};
 };

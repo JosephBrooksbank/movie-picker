@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { IMovie } from '$lib/schema/movie.schema';
 	import Cookies from 'js-cookie';
-	export let movies: IMovie[];
-	export let winner: IMovie | null = null;
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
+
+	export let movies: IMovie[];
+	export let winner: IMovie | null = null;
+	export let nextEvent: Date;
 
 	interface ICastVote {
 		movieId?: number;
@@ -38,7 +40,7 @@
 		if (selected) {
 			previousVote = {
 				movieId: selected.id,
-				dateVoted: new Date()
+				dateVoted: nextEvent
 			};
 			Cookies.set('vote', JSON.stringify(previousVote));
 
@@ -78,6 +80,7 @@
 	on:click={handleVoteClick}
 	alreadyVoted={movies.some((m) => m.id === previousVote.movieId)}
 	{winner}
+	{nextEvent}
 />
 
 <style>

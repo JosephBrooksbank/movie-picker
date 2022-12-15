@@ -32,7 +32,7 @@
         height: 100%;
         background-color: black;
         z-index: 99;
-        opacity: 0.5;
+        opacity: 0.8;
     }
 
 	#container {

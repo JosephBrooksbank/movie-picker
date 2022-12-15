@@ -9,15 +9,11 @@
 	import { onMount } from 'svelte';
 	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
 	export let data: PageData;
-	const { movies, partyData } = data;
+	const { movies, nextParty } = data;
+	let blur: boolean;
 
 	// Setting up values and then overriding with cookies if necessary
-	let showModal: boolean = false;
 	let auth: boolean = false;
-
-	if (partyData?.winner) {
-		showModal = true;
-	}
 
 	onMount(async () => {
 		const cookies = Cookies.get();
@@ -25,27 +21,25 @@
 		if (cookies.isAuth) {
 			auth = true;
 		}
-
-		if (cookies.winnerSeen === partyData?.eventDate.toString()) {
-			showModal = false;
-		}
 	});
 </script>
 
 {#if auth}
-	<WinnerModal winner={partyData?.winner} eventDate={partyData?.eventDate} />
+	<WinnerModal winner={nextParty?.winner} eventDate={nextParty?.date} bind:showModal={blur}/>
 
-	<div class="outer-container {showModal ? blur : ''}">
+	<div class="outer-container {blur ? 'blur' : ''}">
 		<div class="inner-container">
 			<h1>Movie Picker!</h1>
 			<p>Vote on which movie we should watch next week :)</p>
 			<Search />
-			<CardPicker movies={movies} winner={partyData?.winner} />
+			<CardPicker movies={movies} winner={nextParty?.winner} nextEvent={nextParty.date} />
+			{#if !nextParty} 
 			<CountdownClock
-				countdownDate={partyData?.votingEnds}
-				eventDate={partyData?.eventDate}
-				winner={partyData?.winner}
+				countdownDate={nextParty.votingEnds}
+				eventDate={nextParty.date}
+				winner={nextParty.winner}
 			/>
+			{/if}
 		</div>
 	</div>
 {:else}

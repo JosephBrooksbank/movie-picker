@@ -6,7 +6,12 @@
 
 	export let eventDate: Date | undefined;
 	export let winner: IMovie | undefined;
-	let showModal = !!winner;
+
+	export let showModal = !!winner;
+
+	if (Cookies.get('winnerSeen') === eventDate?.toString()) {
+		showModal = false;
+	}
 
 	const handleModalDismiss = () => {
 		showModal = false;
@@ -27,3 +32,15 @@
 		</div>
 	</Modal>
 {/if}
+
+<style>
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+	h1 {
+        width: fit-content;
+		text-align: center;
+	}
+</style>

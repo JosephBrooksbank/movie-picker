@@ -1,13 +1,18 @@
 <script lang="ts">
 	import type { IMovie } from '$lib/schema/movie.schema';
 	import { fade } from 'svelte/transition';
+	export let nextEvent: Date | undefined;
 	export let selected: string | null | undefined;
 	export let alreadyVoted: boolean = false;
 	export let winner: IMovie | null = null;
 </script>
 
 <div class="container">
-	{#if alreadyVoted && !winner}
+	{#if !nextEvent}
+		<div class="submit closed">
+			No Events coming up. Suggest movies for future events!
+		</div>
+	{:else if alreadyVoted && !winner}
 		<div class="submit closed">
 			Already voted
 			<i class="fa-solid fa-circle-check" />
