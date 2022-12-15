@@ -33,7 +33,7 @@
 			<p>Vote on which movie we should watch next week :)</p>
 			<Search />
 			<CardPicker movies={movies} winner={nextParty?.winner} nextEvent={nextParty.date} />
-			{#if !nextParty} 
+			{#if nextParty} 
 			<CountdownClock
 				countdownDate={nextParty.votingEnds}
 				eventDate={nextParty.date}
