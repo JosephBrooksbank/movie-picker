@@ -2,10 +2,10 @@ import { Movie, type IMovie } from '$lib/schema/movie.schema';
 import { Party } from '$lib/schema/party.schema';
 import { getMovies } from '$lib/server/mongoose';
 import { pojo } from '$lib/server/utils';
-import type { Load } from '@sveltejs/kit';
 import dayjs from 'dayjs';
+import type { PageServerLoad } from './$types';
 
-export const load: Load = async ({cookies}) => {
+export const load: PageServerLoad = async ({cookies}) => {
 	const parties = await Party.find({ date: { $gt: new Date() } })
 		.populate<{ winner?: IMovie }>('winner')
 		.limit(1)
