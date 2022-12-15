@@ -1,5 +1,6 @@
-import { Party } from '$lib/schema/party.schema';
+import { Party, type IParty } from '$lib/schema/party.schema';
 import { getMovies } from '$lib/server/mongoose';
+import { pojo } from '$lib/server/utils';
 import type { Load } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -8,7 +9,8 @@ import type { Actions } from './$types';
 
 export const load: Load = async () => {
 	return {
-		movies: getMovies()
+		movies: getMovies(),
+		events: pojo(await Party.find()) as IParty[]
 	};
 };
 
@@ -26,9 +28,8 @@ export const actions: Actions = {
         if (date.hour() == 0) {
             date = date.add(20, 'hour');
         }
+		console.log(date.toString());
 
-        console.log(date);
-		const response = await Party.create({ date });
-		console.log(response);
+		const response = await Party.create({ date: date });
 	}
 };

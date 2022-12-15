@@ -1,15 +1,18 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
+	import dayjs from 'dayjs';
+	import timezone from 'dayjs/plugin/timezone';
+	import utc from 'dayjs/plugin/utc';
 	import MovieData from './MovieData.svelte';
-
 	export let data: import('./$types').PageData;
 
+	dayjs.extend(utc);
+	dayjs.extend(timezone);
 	const handleMoviesSubmit = async () => {
 		const response = await fetch('/api/db/update/movie', {
 			method: 'POST',
 			body: JSON.stringify(data.movies)
 		});
-		console.log(await response.json());
 	};
 
 	const handleDelete = async (event: CustomEvent<{ movieId: string }>) => {
@@ -29,6 +32,10 @@
 	<input type="submit" style="display: none" />
 	Day of event: <input type="date" name="date" />
 </form>
+<h2>Existing Events</h2>
+{#each data.events as event} 
+<div>{dayjs(event.date).tz('America/Chicago').format('MMMM D, hh:mmA')}</div>
+{/each}
 
 <h2>Movie settings</h2>
 <form method="POST" on:submit|preventDefault={handleMoviesSubmit}>
