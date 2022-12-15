@@ -3,8 +3,8 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import CountdownNumber from './CountdownNumber.svelte';
-	export let countdownDate: dayjs.Dayjs;
-	export let eventDate: dayjs.Dayjs;
+	export let countdownDate: Date | undefined;
+	export let eventDate: Date | undefined;
 	export let winner: IMovie | null = null;
 
 	let time = dayjs();
@@ -46,7 +46,7 @@
 		<div>Voting Ended!</div>
 	{/if}
 		<div class="full-date">
-			(Party happens {eventDate.format('MMMM D, h:mmA')})
+			(Party happens {dayjs(eventDate).format('MMMM D, h:mmA')})
 		</div>
 </div>
 

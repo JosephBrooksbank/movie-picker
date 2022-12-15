@@ -17,6 +17,7 @@
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
+		"@types/js-cookie": "^3.0.2",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"eslint": "^8.28.0",
@@ -35,6 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"dayjs": "^1.11.7",
+		"js-cookie": "^3.0.1",
 		"mongodb": "^4.12.1",
 		"mongoose": "^6.8.0"
 	}

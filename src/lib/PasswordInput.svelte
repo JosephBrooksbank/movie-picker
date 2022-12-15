@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Cookies from 'js-cookie';
     import {createEventDispatcher} from 'svelte';
 	let value: string;
 	const pwd = 'secret';
@@ -8,7 +9,7 @@
 
 	const handleSubmit = () => {
         if (value === pwd) {
-            localStorage.setItem('isAuth', 'true');
+			Cookies.set('isAuth', 'true');
             dispatch('auth', {
                 isAuth: true
             });

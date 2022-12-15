@@ -2,70 +2,54 @@
 	import CardPicker from '$lib/CardPicker/CardPicker.svelte';
 	import Search from '$lib/Search/Search.svelte';
 	import type { PageData } from './$types';
-	export let data: PageData;
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
 	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
-	import Modal from '$lib/Modal/Modal.svelte';
-	import MoviePoster from '$lib/MoviePoster.svelte';
 	import PasswordInput from '$lib/PasswordInput.svelte';
+	import Cookies from 'js-cookie';
+
 	import { onMount } from 'svelte';
+	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
+	export let data: PageData;
+	const { movies, partyData } = data;
+
+	// Setting up values and then overriding with cookies if necessary
 	let showModal: boolean = false;
-	if (data.partyData.winner) {
+	let auth: boolean = false;
+
+	if (partyData?.winner) {
 		showModal = true;
 	}
 
-	const nextEvent = dayjs(data.partyData.eventDate);
-	const votingEnds = dayjs(data.partyData.votingEnds);
-	dayjs.extend(relativeTime);
-	let auth: boolean = false;
 	onMount(async () => {
+		const cookies = Cookies.get();
 		// No this is not secure. No I don't care.
-		if (window) {
-			if (localStorage.getItem('isAuth') === 'true') {
-				auth = true;
-			}
+		if (cookies.isAuth) {
+			auth = true;
+		}
 
-			if (localStorage.getItem('winnerSeen') === nextEvent.toString()) {
-				showModal=false;
-			}
+		if (cookies.winnerSeen === partyData?.eventDate.toString()) {
+			showModal = false;
 		}
 	});
-
-	const handleModalDismiss = () => {
-		showModal = false;
-		localStorage.setItem('winnerSeen', nextEvent.toString());
-	}
 </script>
 
 {#if auth}
-	<Modal show={showModal} on:click={handleModalDismiss}>
-		<div>
-			<h1>🎊Winner!🎊</h1>
-			<MoviePoster
-				imageUrl={data.partyData.winner.poster_path}
-				imageAlt={`Poster for ${data.partyData.winner.title}`}
-				width="100%"
-			/>
-			<h1>{data.partyData.winner.title}</h1>
-		</div>
-	</Modal>
+	<WinnerModal winner={partyData?.winner} eventDate={partyData?.eventDate} />
 
 	<div class="outer-container {showModal ? blur : ''}">
 		<div class="inner-container">
 			<h1>Movie Picker!</h1>
 			<p>Vote on which movie we should watch next week :)</p>
 			<Search />
-			<CardPicker movies={data.movies} winner={data.partyData.winner} />
+			<CardPicker movies={movies} winner={partyData?.winner} />
 			<CountdownClock
-				countdownDate={votingEnds}
-				eventDate={nextEvent}
-				winner={data.partyData.winner}
+				countdownDate={partyData?.votingEnds}
+				eventDate={partyData?.eventDate}
+				winner={partyData?.winner}
 			/>
 		</div>
 	</div>
 {:else}
-	<PasswordInput on:auth={() => auth = true } />
+	<PasswordInput on:auth={() => (auth = true)} />
 {/if}
 
 <style>

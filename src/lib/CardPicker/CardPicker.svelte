@@ -1,18 +1,18 @@
 <script lang="ts">
-	import type { IMovie } from  "$lib/schema/movie.schema";
+	import type { IMovie } from '$lib/schema/movie.schema';
+	import Cookies from 'js-cookie';
 	export let movies: IMovie[];
 	export let winner: IMovie | null = null;
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
-	
 
-	interface ILocalStorageVote {
+	interface ICastVote {
 		movieId?: number;
 		dateVoted?: Date;
 	}
 
-	let previousVote: ILocalStorageVote = {};
+	let previousVote: ICastVote = {};
 	let selected: IMovie | null;
 
 	let mousePos = { x: 0, y: 0 };
@@ -31,19 +31,16 @@
 	};
 
 	onMount(async () => {
-		if (window) {
-			previousVote = JSON.parse(localStorage.getItem('vote') ?? '{}');
-		}
+		previousVote = JSON.parse(Cookies.get('vote') ?? '{}');
 	});
 
 	const handleVoteClick = async () => {
 		if (selected) {
-
 			previousVote = {
 				movieId: selected.id,
 				dateVoted: new Date()
 			};
-			localStorage.setItem('vote', JSON.stringify(previousVote));
+			Cookies.set('vote', JSON.stringify(previousVote));
 
 			const date = new Date();
 			const day = date.getDay();
@@ -80,7 +77,7 @@
 	selected={selected?.title}
 	on:click={handleVoteClick}
 	alreadyVoted={movies.some((m) => m.id === previousVote.movieId)}
-	winner={winner}
+	{winner}
 />
 
 <style>

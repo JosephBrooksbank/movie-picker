@@ -3,6 +3,7 @@
 	import dayjs from 'dayjs';
 	import timezone from 'dayjs/plugin/timezone';
 	import utc from 'dayjs/plugin/utc';
+	import EventData from './EventData.svelte';
 	import MovieData from './MovieData.svelte';
 	export let data: import('./$types').PageData;
 
@@ -33,9 +34,7 @@
 	Day of event: <input type="date" name="date" />
 </form>
 <h2>Existing Events</h2>
-{#each data.events as event} 
-<div>{dayjs(event.date).tz('America/Chicago').format('MMMM D, hh:mmA')}</div>
-{/each}
+<EventData events={data.events}/>
 
 <h2>Movie settings</h2>
 <form method="POST" on:submit|preventDefault={handleMoviesSubmit}>
