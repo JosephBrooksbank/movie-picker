@@ -55,9 +55,16 @@
 		opacity: 0;
 	}
 	#flashlight > * {
+		text-align: center;
 		color: transparent;
 		background-clip: text;
 		-webkit-background-clip: text;
+	}
+	#flashlight > i {
+		font-size: 5vmax;
+	}
+	#flashlight > h1 {
+		font-size: 1.5vmax;
 	}
 
 	img {
