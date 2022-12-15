@@ -1,9 +1,10 @@
 <script lang="ts">
-	import MoviePoster from "$lib/MoviePoster.svelte";
-import type { IMovie } from "$lib/schema/movie.schema";
+	import MoviePoster from '$lib/MoviePoster.svelte';
+	import type { IMovie } from '$lib/schema/movie.schema';
 	export let mousePos: { x: number; y: number };
 	export let selected: boolean = false;
 	export let movie: IMovie;
+	export let showMoviePoster: boolean = true;
 	let self: any;
 
 	$: rect = self?.getBoundingClientRect() ?? { x: 0, y: 0 };
@@ -13,25 +14,59 @@ import type { IMovie } from "$lib/schema/movie.schema";
 	};
 </script>
 
-<div bind:this={self} class='card {selected? 'selected' : ''}' style="--mouse-x:{m.x}px; --mouse-y:{m.y}px">
+<div
+	bind:this={self}
+	class="card {selected ? 'selected' : ''}"
+	style="--mouse-x:{m.x}px; --mouse-y:{m.y}px"
+>
 	<div class="card-content" on:click>
-		<MoviePoster imageUrl={movie.poster_path} imageAlt={`A poster for the movie '${movie.title}`}/>
-    </div>
+		{#if showMoviePoster}
+			<MoviePoster
+				imageUrl={movie.poster_path}
+				imageAlt={`A poster for the movie '${movie.title}`}
+			/>
+		{:else}
+			<div id="flashlight">
+				<i class="fa-solid fa-arrow-up fa-9x" />
+				<h1>Add movies above.</h1>
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
-
 	.selected {
-		background-color: #3BA55C !important; 
+		background-color: #3ba55c !important;
+	}
+	#flashlight {
+		/* position: relative; */
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		background: radial-gradient(
+			800px circle at var(--mouse-x) var(--mouse-y),
+			rgba(255, 255, 255, 0.06),
+			transparent 40%
+		);
+		background-clip: text;
+		-webkit-background-clip: text;
+		opacity: 0;
+	}
+	#flashlight > * {
+		color: transparent;
+		background-clip: text;
+		-webkit-background-clip: text;
 	}
 
-    img {
-        object-fit: cover;
-        aspect-ratio: 67.5/100;
-        width: 100%;
-        border-radius: 10px;
-        opacity: 0.8;
-    }
+	img {
+		object-fit: cover;
+		aspect-ratio: 67.5/100;
+		width: 100%;
+		border-radius: 10px;
+		opacity: 0.8;
+	}
 	.card {
 		--card-color: rgba(255, 255, 255, 0.1);
 		cursor: pointer;
@@ -41,7 +76,7 @@ import type { IMovie } from "$lib/schema/movie.schema";
 		position: relative;
 		padding: 1px;
 		transition: transform 500ms ease, box-shadow 400ms ease-in-out, background-color 100ms;
-        margin: 1px;
+		margin: 1px;
 		width: 100%;
 	}
 

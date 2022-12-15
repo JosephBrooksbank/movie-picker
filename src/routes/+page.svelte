@@ -9,7 +9,8 @@
 	import { onMount } from 'svelte';
 	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
 	export let data: PageData;
-	const { movies, nextParty } = data;
+	let { movies, nextParty } = data;
+	nextParty = {};
 	let blur: boolean;
 
 	// Setting up values and then overriding with cookies if necessary
@@ -33,7 +34,7 @@
 			<p>Vote on which movie we should watch next week :)</p>
 			<Search />
 			<CardPicker movies={movies} winner={nextParty?.winner} nextEvent={nextParty.date} />
-			{#if nextParty} 
+			{#if nextParty?.date} 
 			<CountdownClock
 				countdownDate={nextParty.votingEnds}
 				eventDate={nextParty.date}

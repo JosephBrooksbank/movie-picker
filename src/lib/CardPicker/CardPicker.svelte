@@ -72,6 +72,7 @@
 			on:click={handleCardClick(movie)}
 			selected={selected?.id === movie.id}
 			{movie}
+			showMoviePoster={!!nextEvent}
 		/>
 	{/each}
 </div>
@@ -93,6 +94,9 @@
 
 	/* need to affect styles in individual card components for cool border-hover effect */
 	:global(#cards:hover > .card::after) {
+		opacity: 1;
+	}
+	:global(#cards:hover #flashlight) {
 		opacity: 1;
 	}
 </style>
