@@ -11,7 +11,7 @@
 
 	interface ICastVote {
 		movieId?: number;
-		dateVoted?: Date;
+		eventDate?: Date;
 	}
 
 	let previousVote: ICastVote = {};
@@ -40,9 +40,11 @@
 		if (selected) {
 			previousVote = {
 				movieId: selected.id,
-				dateVoted: nextEvent
+				eventDate: nextEvent
 			};
-			Cookies.set('vote', JSON.stringify(previousVote));
+			Cookies.set('vote', JSON.stringify(previousVote), {
+				expires: 2^31
+			});
 
 			const date = new Date();
 			const day = date.getDay();

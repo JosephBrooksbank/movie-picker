@@ -15,7 +15,9 @@
 
 	const handleModalDismiss = () => {
 		showModal = false;
-		Cookies.set('winnerSeen', eventDate?.toString() ?? '');
+		Cookies.set('winnerSeen', eventDate?.toString() ?? '', {
+			expires: 2^31
+		});
 	};
 </script>
 
