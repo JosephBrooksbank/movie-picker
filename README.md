@@ -9,7 +9,7 @@ My friends and I have a semi-weekly movie night. This is a little website as a f
 
 
 ## TODO
-* consolidate color scheme into css vars, consistency
+* ~~consolidate color scheme into css vars, consistency~~
 * use stores rather than prop waterfalls
 * algorithm for picking next movies to vote on
 * (?) connect to mediaserver to find movie automatically
