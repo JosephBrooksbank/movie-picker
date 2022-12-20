@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade, blur,fly, slide, scale, draw, crossfade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	export let n: number;
 	export let label: string;

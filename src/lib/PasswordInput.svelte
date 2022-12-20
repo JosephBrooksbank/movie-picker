@@ -22,8 +22,8 @@
 	<h1>Enter Password</h1>
 	<div class="search-box">
 		<form on:submit={handleSubmit}>
-			<button class="btn-search"><i class="fas fa-lock" /></button>
-			<input bind:value type="password" class="input-search" placeholder="Secret Secret..." autofocus/>
+			<button class="btn-login"><i class="fas fa-lock" /></button>
+			<input bind:value type="password" class="input-login" placeholder="Secret Secret..." autofocus/>
 			<input type="submit" style="display: none" />
 		</form>
 	</div>
@@ -59,7 +59,7 @@
 		height: fit-content;
 		position: relative;
 	}
-	.input-search {
+	.input-login {
 		height: 50px;
 		width: 50px;
 		border-style: none;
@@ -69,17 +69,17 @@
 		outline: none;
 		border-radius: 25px;
 		transition: all 0.5s ease-in-out;
-		background-color: #21252b;
+		background-color: var(--dark-gray);
 		padding-right: 40px;
-		color: #fff;
+		color: azure;
 	}
-	.input-search::placeholder {
-		color: rgba(255, 255, 255, 0.5);
+	.input-login::placeholder {
+		color: var(--light-gray);
 		font-size: 18px;
 		letter-spacing: 2px;
 		font-weight: 100;
 	}
-	.btn-search {
+	.btn-login {
 		width: 50px;
 		height: 50px;
 		border-style: none;
@@ -90,12 +90,12 @@
 		border-radius: 50%;
 		position: absolute;
 		right: 0px;
-		color: #ffffff;
+		color: azure;
 		background-color: transparent;
 		pointer-events: painted;
 	}
-	.btn-search:focus ~ .input-search,
-	.input-search:focus {
+	.btn-login:focus ~ .input-login,
+	.input-login:focus {
 		width: 300px;
 		border-radius: 0px;
 		background-color: transparent;

@@ -86,7 +86,7 @@
 		margin-top:-6px;
 		border-radius: 0 0 24px 24px;
 		padding-bottom: 10px;
-		background-color: #202225;
+		background-color: var(--dark-gray);
 		gap: 5px;
 	}
 

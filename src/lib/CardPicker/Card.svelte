@@ -136,7 +136,7 @@
 	/* main body color */
 	.card-content {
 		/* display: inline-block; */
-		background-color: rgba(23, 23, 23, 1);
+		background-color: var(--darker-gray);
 		border-radius: inherit;
 		position: relative;
 		width: 100%;

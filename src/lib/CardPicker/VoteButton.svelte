@@ -62,10 +62,9 @@
 	.open {
 		cursor: pointer;
 		color: azure;
-		background-color: #3ba55c;
 	}
 	.closed {
-		background-color: #2f3136;
+		background-color: var(--dark-gray);
 		color: azure;
 		text-align: center;
 	}

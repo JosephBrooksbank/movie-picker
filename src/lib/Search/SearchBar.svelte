@@ -56,7 +56,7 @@
 		color: #3BA55C;
 	}
 	#search-icon {
-		color: rgb(107, 106, 106);
+		color: var(--light-gray);
 	}
 	i {
 		width: 20px;
@@ -66,7 +66,7 @@
 		box-sizing: border-box;
 		height: 100%;
 		width: 100%;
-		background-color: #202225;
+		background-color: var(--dark-gray);
 		display: flex;
 		align-items: center;
 		width: 100%;
@@ -88,7 +88,7 @@
 		padding: 10px;
 		padding: auto;
 		padding-left: 15px;
-		background-color: #202225;
+		background-color: var(--dark-gray);
 		margin: 0;
 		color: azure;
 		z-index: 3;

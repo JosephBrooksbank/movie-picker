@@ -14,6 +14,8 @@
 			method: 'POST',
 			body: JSON.stringify(data.movies)
 		});
+
+		invalidateAll();
 	};
 
 	const handleDelete = async (event: CustomEvent<{ movieId: string }>) => {
@@ -58,7 +60,7 @@
 		padding: 5px;
 		width: 5%;
 		margin: 10px;
-		background-color: #626c80;
+		background-color: var(--button-bg-color);
 		border: none;
 		border-radius: 5px;
 		color: azure;
@@ -67,12 +69,6 @@
 	}
 	button:hover {
 		opacity: 1;
-	}
-	:root {
-		--bg-color: #282c34;
-		background-color: var(--bg-color);
-		color: azure;
-		font-family: Arial, Helvetica, sans-serif;
 	}
 
 	#container {

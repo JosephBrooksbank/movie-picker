@@ -25,7 +25,7 @@
 	li {
 		display: flex;
 		width: 120%;
-		background-color: #202225;
+		background-color: var(--dark-gray);
 		min-height: 70px;
 		align-items: center;
 		justify-content: space-between;
@@ -35,7 +35,7 @@
 		word-break: break-all;
 	}
 	li:hover {
-		background-color: #2e3136;
+		background-color: var(--light-gray);
 	}
 	img {
 		position: absolute;

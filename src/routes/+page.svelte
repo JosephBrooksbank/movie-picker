@@ -36,11 +36,7 @@
 {/if}
 
 <style>
-	.blur {
-		filter: blur(10px);
-	}
 	:root {
-		--bg-color: #282c34;
 		background-color: var(--bg-color);
 	}
 	.outer-container {
@@ -58,15 +54,7 @@
 	h1 {
 		text-align: center;
 	}
-	h2 {
-		text-align: center;
-	}
 	p {
 		text-align: center;
-	}
-	:global(body) {
-		height: 100%;
-		color: azure;
-		font-family: Arial, Helvetica, sans-serif;
 	}
 </style>
