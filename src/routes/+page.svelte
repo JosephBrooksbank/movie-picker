@@ -5,29 +5,31 @@
 	import CountdownClock from '$lib/CountdownClock/CountdownClock.svelte';
 	import PasswordInput from '$lib/PasswordInput.svelte';
 	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
+	import { onMount } from 'svelte';
+	import { movies, nextEvent } from '$lib/Stores';
 	export let data: PageData;
-	let { movies, nextParty, isAuth } = data;
 	let blur: boolean;
 
+	onMount(() => {
+		nextEvent.set(data.nextParty);
+		movies.set(data.movies);
+	})
+
 	// Setting up values from cookies
-	let auth: boolean = isAuth === 'true';
+	let auth: boolean = data.isAuth === 'true';
 </script>
 
 {#if auth}
-	<WinnerModal winner={nextParty?.winner} eventDate={nextParty?.date} bind:showModal={blur}/>
+	<WinnerModal bind:showModal={blur}/>
 
 	<div class="outer-container {blur ? 'blur' : ''}">
 		<div class="inner-container">
 			<h1>Movie Picker!</h1>
 			<p>Vote on which movie we should watch next week :)</p>
 			<Search />
-			<CardPicker movies={movies} winner={nextParty?.winner} nextEvent={nextParty.date} />
-			{#if nextParty?.date} 
-			<CountdownClock
-				countdownDate={nextParty.votingEnds}
-				eventDate={nextParty.date}
-				winner={nextParty.winner}
-			/>
+			<CardPicker/>
+			{#if $nextEvent?.date} 
+			<CountdownClock />
 			{/if}
 		</div>
 	</div>

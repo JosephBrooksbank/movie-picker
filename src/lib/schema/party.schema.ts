@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import { Schema, model, Types} from 'mongoose';
+import type { IMovie } from './movie.schema';
 
 export interface IParty {
     date: Date,
     votingEnds: Date,
-    winner: Types.ObjectId
+    winner: Types.ObjectId | IMovie
 }
 
 export const partySchema = new Schema<IParty>({

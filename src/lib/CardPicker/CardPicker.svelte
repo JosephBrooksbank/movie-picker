@@ -1,13 +1,10 @@
 <script lang="ts">
 	import type { IMovie } from '$lib/schema/movie.schema';
 	import Cookies from 'js-cookie';
+	import {nextEvent, movies} from '$lib/Stores';
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
-
-	export let movies: IMovie[];
-	export let winner: IMovie | null = null;
-	export let nextEvent: Date;
 
 	interface ICastVote {
 		movieId?: number;
@@ -40,7 +37,7 @@
 		if (selected) {
 			previousVote = {
 				movieId: selected.id,
-				eventDate: nextEvent
+				eventDate: $nextEvent?.date
 			};
 			Cookies.set('vote', JSON.stringify(previousVote), {
 				expires: 2^31
@@ -68,22 +65,20 @@
 </script>
 
 <div id="cards" on:mousemove={handleMouseMove}>
-	{#each movies as movie}
+	{#each $movies as movie}
 		<Card
 			{mousePos}
 			on:click={handleCardClick(movie)}
 			selected={selected?.id === movie.id}
 			{movie}
-			showMoviePoster={!!nextEvent}
+			showMoviePoster={!!$nextEvent?.date}
 		/>
 	{/each}
 </div>
 <VoteButton
 	selected={selected?.title}
 	on:click={handleVoteClick}
-	alreadyVoted={movies.some((m) => m.id === previousVote.movieId)}
-	{winner}
-	{nextEvent}
+	alreadyVoted={$movies.some((m) => m.id === previousVote.movieId)}
 />
 
 <style>

@@ -1,25 +1,25 @@
 <script lang="ts">
-	import type { IMovie } from '$lib/schema/movie.schema';
+	import { nextEvent } from '$lib/Stores';
+	import { isMovieGuard } from '$lib/utils';
 	import { fade } from 'svelte/transition';
-	export let nextEvent: Date | undefined;
+
 	export let selected: string | null | undefined;
 	export let alreadyVoted: boolean = false;
-	export let winner: IMovie | null = null;
 </script>
 
 <div class="container">
-	{#if !nextEvent}
+	{#if !$nextEvent}
 		<div class="submit closed">
 			No Events coming up. Suggest movies for future events!
 		</div>
-	{:else if alreadyVoted && !winner}
+	{:else if $nextEvent?.winner && isMovieGuard($nextEvent.winner)}
+		<div class="submit closed">
+		🎊 Winner: {$nextEvent.winner.title} 🎊
+		</div>
+	{:else if alreadyVoted}
 		<div class="submit closed">
 			Already voted
 			<i class="fa-solid fa-circle-check" />
-		</div>
-	{:else if winner}
-		<div class="submit closed">
-		🎊 Winner: {winner.title} 🎊
 		</div>
 	{:else if selected}
 		<button class="submit open" transition:fade={{ duration: 100 }} on:click>
@@ -57,6 +57,9 @@
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 		opacity: 0.8;
 		/* transition: background-color 500ms; */
+	}
+	button {
+		background-color: var(--dark-gray);
 	}
 
 	.open {

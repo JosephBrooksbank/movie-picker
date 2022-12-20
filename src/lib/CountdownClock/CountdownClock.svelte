@@ -3,10 +3,9 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import CountdownNumber from './CountdownNumber.svelte';
-	export let countdownDate: Date | undefined;
-	export let eventDate: Date | undefined;
-	export let winner: IMovie | null = null;
+	import { nextEvent } from '$lib/Stores';
 
+	const countdownDate = $nextEvent?.votingEnds;
 	let time = dayjs();
 	$: days = time.diff(countdownDate, 'days') * -1;
 	$: hours = (time.diff(countdownDate, 'hours') * -1) % 60;
@@ -25,7 +24,7 @@
 </script>
 
 <div class="container">
-	{#if !winner}
+	{#if !$nextEvent?.winner}
 		<div>Voting ends in</div>
 		<div class="time-container">
 			{#if days > 0}
@@ -41,13 +40,12 @@
 				<CountdownNumber n={seconds} label={'second'} />
 			{/if}
 		</div>
-	{/if}
-	{#if winner}
+	{:else}
 		<div>Voting Ended!</div>
 	{/if}
-		<div class="full-date">
-			(Party happens {dayjs(eventDate).format('MMMM D, h:mmA')})
-		</div>
+	<div class="full-date">
+		(Party happens {dayjs($nextEvent?.date).format('MMMM D, h:mmA')})
+	</div>
 </div>
 
 <style>

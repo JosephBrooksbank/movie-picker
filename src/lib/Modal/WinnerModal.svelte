@@ -1,36 +1,34 @@
 <script lang="ts">
 	import MoviePoster from '$lib/MoviePoster.svelte';
-	import type { IMovie } from '$lib/schema/movie.schema';
+	import { nextEvent } from '$lib/Stores';
+	import { isMovieGuard } from '$lib/utils';
 	import Cookies from 'js-cookie';
 	import Modal from './Modal.svelte';
 
-	export let eventDate: Date | undefined;
-	export let winner: IMovie | undefined;
+	export let showModal = !!$nextEvent?.winner;
 
-	export let showModal = !!winner;
-
-	if (Cookies.get('winnerSeen') === eventDate?.toString()) {
+	if (Cookies.get('winnerSeen') === $nextEvent?.date.toString()) {
 		showModal = false;
 	}
 
 	const handleModalDismiss = () => {
 		showModal = false;
-		Cookies.set('winnerSeen', eventDate?.toString() ?? '', {
+		Cookies.set('winnerSeen', $nextEvent?.date.toString() ?? '', {
 			expires: 2^31
 		});
 	};
 </script>
 
-{#if winner}
+{#if $nextEvent?.winner && isMovieGuard($nextEvent.winner)}
 	<Modal show={showModal} on:click={handleModalDismiss}>
 		<div>
 			<h1>🎊Winner!🎊</h1>
 			<MoviePoster
-				imageUrl={winner.poster_path}
-				imageAlt={`Poster for ${winner.title}`}
+				imageUrl={$nextEvent.winner.poster_path}
+				imageAlt={`Poster for ${$nextEvent.winner.title}`}
 				width="100%"
 			/>
-			<h1>{winner.title}</h1>
+			<h1>{$nextEvent.winner.title}</h1>
 		</div>
 	</Modal>
 {/if}

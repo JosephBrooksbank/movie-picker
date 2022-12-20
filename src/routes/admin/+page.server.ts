@@ -1,6 +1,6 @@
 import { Party, type IParty } from '$lib/schema/party.schema';
 import { getMovies } from '$lib/server/mongoose';
-import { pojo } from '$lib/server/utils';
+import { pojo } from '$lib/utils';
 import type { Load } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
