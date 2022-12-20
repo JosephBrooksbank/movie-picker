@@ -8,7 +8,7 @@
 </script>
 
 <div class="container">
-	{#if !$nextEvent}
+	{#if !$nextEvent?.date}
 		<div class="submit closed">
 			No Events coming up. Suggest movies for future events!
 		</div>
