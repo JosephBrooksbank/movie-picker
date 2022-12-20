@@ -7,14 +7,16 @@
 
 	export let showModal = !!$nextEvent?.winner;
 
-	if (Cookies.get('winnerSeen') === $nextEvent?.date.toString()) {
-		showModal = false;
+	if ($nextEvent?.date) {
+		if (Cookies.get('winnerSeen') === $nextEvent?.date.toString()) {
+			showModal = false;
+		}
 	}
 
 	const handleModalDismiss = () => {
 		showModal = false;
 		Cookies.set('winnerSeen', $nextEvent?.date.toString() ?? '', {
-			expires: 2^31
+			expires: 2 ^ 31
 		});
 	};
 </script>
@@ -34,13 +36,13 @@
 {/if}
 
 <style>
-    div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+	div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 	h1 {
-        width: fit-content;
+		width: fit-content;
 		text-align: center;
 	}
 </style>

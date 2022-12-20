@@ -28,7 +28,6 @@ export const actions: Actions = {
         if (date.hour() == 0) {
             date = date.add(20, 'hour');
         }
-		console.log(date.toString());
 
 		const response = await Party.create({ date: date });
 	}

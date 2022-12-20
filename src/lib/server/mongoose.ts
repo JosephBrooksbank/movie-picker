@@ -11,7 +11,6 @@ export const createMovie = async (document: TMDBMovie) => {
 	};
 	const options: mongoose.QueryOptions = { upsert: true, new: true, setDefaultsOnInsert: true };
 	const response = await Movie.findOneAndUpdate(query, update, options);
-	console.log(JSON.stringify(response));
 	return response;
 };
 
