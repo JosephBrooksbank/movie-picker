@@ -5,7 +5,8 @@ import type { IMovie } from './movie.schema';
 export interface IParty {
     date: Date,
     votingEnds: Date,
-    winner: Types.ObjectId | IMovie
+    winner?: Types.ObjectId | IMovie,
+    contestants: Types.ObjectId[] | IMovie[]
 }
 
 export const partySchema = new Schema<IParty>({
@@ -16,7 +17,8 @@ export const partySchema = new Schema<IParty>({
             return dayjs(this.date).subtract(2, 'days').toDate();
         }
     },
-    winner: {type: Schema.Types.ObjectId, ref: "Movie"}
+    winner: {type: Schema.Types.ObjectId, ref: "Movie"},
+    contestants: [{ type: Schema.Types.ObjectId, ref: 'Movie'}]
 })
 
 export const Party = model('Party', partySchema);

@@ -6,6 +6,7 @@
 	import EventData from './EventData.svelte';
 	import MovieData from './MovieData.svelte';
 	export let data: import('./$types').PageData;
+	let showEventForm: boolean = true;
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
@@ -26,17 +27,36 @@
 
 		invalidateAll();
 	};
+
+	const votingUnits = [
+		'days',
+		'hours',
+		'minutes'
+	]
 </script>
 
 <h1>Admin Settings</h1>
 
 <h2>Add Event</h2>
-<form method="POST" action="?/newEvent">
+<button on:click={() => (showEventForm = !showEventForm)}>Add Event</button>
+<form method="POST" action="?/newEvent" class="add-event-form {showEventForm} use:enhance">
+	<label for="date">Day of event:</label>
+	<input type="date" name="date" />
+	<label for="votingOffset">Voting Ends</label>
+	<div>
+		<input type="number" name="votingOffset" value="2" />
+		<select id="voting-unit" name="offsetUnit">
+			{#each votingUnits as unit} 
+			<option value={unit}>{unit}</option>
+			{/each}
+		</select>
+	</div>
+	<label for="votingOffset">Before event</label>
+	<button type="submit">Save Event</button>
 	<input type="submit" style="display: none" />
-	Day of event: <input type="date" name="date" />
 </form>
 <h2>Existing Events</h2>
-<EventData events={data.events}/>
+<EventData events={data.events} />
 
 <h2>Movie settings</h2>
 <form method="POST" on:submit|preventDefault={handleMoviesSubmit}>
@@ -51,6 +71,57 @@
 </form>
 
 <style>
+	[type='date'] {
+		background: #fff
+			url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97%
+			50% no-repeat;
+	}
+	[type='date']::-webkit-inner-spin-button {
+		display: none;
+	}
+	[type='date']::-webkit-calendar-picker-indicator {
+		opacity: 0;
+	}
+
+	.add-event-form {
+		transition: all 500ms cubic-bezier(0.28, -0.94, 0.55, 2);
+		background: var(--light-gray);
+		padding: 5px;
+		border-radius: 10px;
+		overflow: hidden;
+		display: flex;
+		justify-content: baseline;
+		align-items: left;
+		gap: 10px;
+		flex-direction: column;
+		font-size: 24px;
+		width: fit-content;
+	}
+	.add-event-form input {
+		border: 1px solid var(--light-gray);
+		border-radius: 5px;
+		padding: 3px 5px;
+		box-shadow: box-shadow inset 0 3px 6px rgba(0, 0, 0, 0.1);
+	}
+	.add-event-form select {
+		border-radius: 5px;
+		padding: 3px 5px;
+		border: 1px solid var(--light-gray);
+	}
+	.add-event-form.false {
+		height: 0;
+		opacity: 0;
+	}
+
+	.add-event-form.true {
+		height: 300px;
+	}
+
+	.add-event-form button {
+		width: fit-content;
+		background-color: var(--dark-gray);
+	}
+
 	#button-row {
 		display: flex;
 		justify-content: center;

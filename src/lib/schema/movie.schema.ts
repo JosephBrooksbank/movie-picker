@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 export interface IMovie {
+    _id?: string,
     id: number,
     adult: boolean,
     backdrop_path: string,
