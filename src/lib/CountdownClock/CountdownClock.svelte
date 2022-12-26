@@ -8,7 +8,7 @@
 	const countdownDate = $nextEvent?.votingEnds;
 	let time = dayjs();
 	$: days = time.diff(countdownDate, 'days') * -1;
-	$: hours = (time.diff(countdownDate, 'hours') * -1) % 60;
+	$: hours = (time.diff(countdownDate, 'hours') * -1) % 24;
 	$: minutes = (time.diff(countdownDate, 'minutes') * -1) % 60;
 	$: seconds = (time.diff(countdownDate, 'seconds') * -1) % 60;
 
