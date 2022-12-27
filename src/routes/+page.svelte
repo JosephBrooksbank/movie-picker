@@ -55,6 +55,7 @@
 	}
 	h1 {
 		text-align: center;
+		margin: 0
 	}
 	p {
 		text-align: center;

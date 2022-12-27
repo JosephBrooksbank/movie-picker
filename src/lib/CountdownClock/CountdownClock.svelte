@@ -50,17 +50,13 @@
 
 <style>
 	.container {
-		margin-top: 20px;
-		text-align: center;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		align-items: center;
 	}
 	.time-container {
 		margin: -8px;
 		display: flex;
-		justify-content: center;
-		align-items: center;
 		gap: 8px;
 	}
 </style>

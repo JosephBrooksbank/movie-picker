@@ -8,6 +8,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ cookies }) => {
 	const parties = await Party.find({ date: { $gt: new Date() } })
 		.populate<{ winner: IMovie }>('winner')
+		.populate<{ contestants: IMovie }>('contestants')
 		.limit(1)
 		.sort({ date: 1 });
 
@@ -22,8 +23,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		// Voting not over, return voting time
 	}
 
+
 	return {
-		movies: getMovies(3),
+		movies: pojo(nextParty.contestants),
 		nextParty: pojo(nextParty),
 		isAuth: cookies.get('isAuth')
 	};

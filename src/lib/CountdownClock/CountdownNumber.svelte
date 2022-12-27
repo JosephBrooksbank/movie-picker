@@ -19,11 +19,11 @@
 
 <style>
 	* {
-		font-size: min(2.5vmax, 24pt);
+		font-size: min(2.5vmax, 20pt);
 	}
     .container {
         display: flex;
-        align-items: center;
+		align-items: center;
         gap: 8px;
     }
 
