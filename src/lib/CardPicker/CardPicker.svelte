@@ -78,7 +78,7 @@
 <VoteButton
 	selected={selected?.title}
 	on:click={handleVoteClick}
-	alreadyVoted={$movies.some((m) => m.id === previousVote.movieId)}
+	alreadyVoted={$nextEvent?.date == previousVote.eventDate}
 />
 
 <style>
