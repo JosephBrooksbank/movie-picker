@@ -1,8 +1,8 @@
 <script lang="ts">
+	import type { MovieSearchReponse, TMDBMovie } from 'src/types/TMDB';
+	import { slide } from 'svelte/transition';
 	import Result from './Result.svelte';
 	import SearchBar from './SearchBar.svelte';
-	import { slide } from 'svelte/transition';
-	import type {TMDBMovie, MovieSearchReponse} from 'src/types/TMDB';
 
 	let value: string;
 	let success = false;
@@ -23,7 +23,7 @@
 			method: 'POST',
 			body: JSON.stringify(body)
 		});
-		results = (await response.json() as MovieSearchReponse).results;
+		results = ((await response.json()) as MovieSearchReponse).results;
 	};
 
 	const handleResultClicked = async (event: CustomEvent) => {
@@ -31,7 +31,7 @@
 			...event.detail,
 			dateAdded: new Date().toString(),
 			priority: 2
-		}
+		};
 
 		const response = await fetch('/api/db/add/movie', {
 			method: 'POST',
@@ -41,22 +41,22 @@
 		value = '';
 		if (response.ok) {
 			success = true;
-			setTimeout(() => success = false, 3000)
+			setTimeout(() => (success = false), 3000);
 		}
 	};
 </script>
 
 <div id="container">
-<SearchBar bind:value {success}/>
-{#if results.length > 0}
-	<ul id="search-results" transition:slide>
-		{#key value}
-		{#each results as result (result.id)}
-			<Result {result} on:click={handleResultClicked}/>
-		{/each}
-		{/key}
-	</ul>
-{/if}
+	<SearchBar bind:value {success} />
+	{#if results.length > 0}
+		<ul id="search-results" transition:slide>
+			{#key value}
+				{#each results as result (result.id)}
+					<Result {result} on:click={handleResultClicked} />
+				{/each}
+			{/key}
+		</ul>
+	{/if}
 </div>
 
 <!-- <pre>
@@ -68,6 +68,14 @@
 		min-height: 50px;
 		position: relative;
 		z-index: 10;
+	}
+
+	#toolbar {
+		/*  */
+		width: calc(100% + 32px);
+		display: flex;
+		align-items: center;
+		gap: 8px;
 	}
 
 	#search-results {
@@ -83,7 +91,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		margin: 0;
-		margin-top:-6px;
+		margin-top: -6px;
 		border-radius: 0 0 24px 24px;
 		padding-bottom: 10px;
 		background-color: var(--dark-gray);

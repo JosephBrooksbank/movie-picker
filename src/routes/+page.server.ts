@@ -8,7 +8,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ cookies }) => {
 	const parties = await Party.find({ date: { $gt: new Date() } })
 		.populate<{ winner: IMovie }>('winner')
-		.populate<{ contestants: IMovie }>('contestants')
+		.populate<{ contestants: IMovie[] }>('contestants')
 		.limit(1)
 		.sort({ date: 1 });
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mode } from '$lib/Stores';
 	import MoviePoster from '$lib/MoviePoster.svelte';
 	import type { IMovie } from '$lib/schema/movie.schema';
 	export let mousePos: { x: number; y: number };
@@ -21,6 +22,18 @@
 >
 	<div class="card-content" on:click>
 		{#if showMoviePoster}
+			<div class="overlay {$mode == 'info' ? 'show' : 'hide'}">
+				<div class="left">
+					<span class="quote">“</span>
+				</div>
+				<blockquote>
+					{movie.overview}
+				</blockquote>
+				<div class="right">
+					<span class="quote">”</span>
+				</div>
+			</div>
+
 			<MoviePoster
 				imageUrl={movie.poster_path}
 				imageAlt={`A poster for the movie '${movie.title}`}
@@ -35,6 +48,52 @@
 </div>
 
 <style>
+	.quote {
+		font-size: 5vmin;
+		padding: 0px;
+	}
+
+	blockquote {
+
+		margin: 5%;
+	}
+	.left {
+		width: 100%;
+		display: flex;
+		padding-left: 30px;
+	}
+	.right {
+		width: 100%;
+		display: flex;
+		justify-content: end;
+		padding-right: 30px;
+	}
+	.overlay {
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		background: black;
+		border-radius: 10px;
+		transition: opacity 500ms ease;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 5%;
+		font-size: 2vmin;
+		overflow-y: scroll;
+	}
+	.overlay::-webkit-scrollbar {
+		display: none;
+	}
+	.overlay.show {
+		opacity: 90%;
+	}
+	.overlay.hide {
+		opacity: 0%;
+	}
+
 	.selected {
 		background-color: #3ba55c !important;
 	}

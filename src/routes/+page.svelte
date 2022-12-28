@@ -7,29 +7,38 @@
 	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
 	import { onMount } from 'svelte';
 	import { movies, nextEvent } from '$lib/Stores';
+	import { isMovieGuard, isPartyGuard } from '$lib/utils';
+	import InfoToggle from '$lib/InfoToggle/InfoToggle.svelte';
 	export let data: PageData;
 	let blur: boolean;
 
 	onMount(() => {
-		nextEvent.set(data.nextParty);
-		movies.set(data.movies);
-	})
+		if (isPartyGuard(data.nextParty)) {
+			nextEvent.set(data.nextParty);
+		}
+		if (isMovieGuard(data.movies[0])) {
+			movies.set(data.movies);
+		}
+	});
 
 	// Setting up values from cookies
 	let auth: boolean = data.isAuth === 'true';
 </script>
 
 {#if auth}
-	<WinnerModal bind:showModal={blur}/>
+	<WinnerModal bind:showModal={blur} />
 
 	<div class="outer-container {blur ? 'blur' : ''}">
 		<div class="inner-container">
-			<h1>Movie Picker!</h1>
+			<div id="toolbar">
+				<h1>Movie Picker!</h1>
+				<InfoToggle />
+			</div>
 			<p>Vote on which movie we should watch next week :)</p>
 			<Search />
-			<CardPicker/>
-			{#if $nextEvent?.date} 
-			<CountdownClock />
+			<CardPicker />
+			{#if $nextEvent?.date}
+				<CountdownClock />
 			{/if}
 		</div>
 	</div>
@@ -38,6 +47,12 @@
 {/if}
 
 <style>
+	#toolbar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 16px;
+	}
 	:root {
 		background-color: var(--bg-color);
 	}
@@ -55,7 +70,7 @@
 	}
 	h1 {
 		text-align: center;
-		margin: 0
+		margin: 0;
 	}
 	p {
 		text-align: center;
