@@ -6,8 +6,8 @@
 	import PasswordInput from '$lib/PasswordInput.svelte';
 	import WinnerModal from '$lib/Modal/WinnerModal.svelte';
 	import { onMount } from 'svelte';
-	import { movies, nextEvent } from '$lib/Stores';
-	import { isMovieGuard, isPartyGuard } from '$lib/utils';
+	import { nextEvent } from '$lib/Stores';
+	import { isPartyGuard } from '$lib/utils';
 	import InfoToggle from '$lib/InfoToggle/InfoToggle.svelte';
 	export let data: PageData;
 	let blur: boolean;
@@ -15,9 +15,6 @@
 	onMount(() => {
 		if (isPartyGuard(data.nextParty)) {
 			nextEvent.set(data.nextParty);
-		}
-		if (isMovieGuard(data.movies[0])) {
-			movies.set(data.movies);
 		}
 	});
 

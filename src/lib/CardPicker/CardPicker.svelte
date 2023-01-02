@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { IMovie } from '$lib/schema/movie.schema';
 	import Cookies from 'js-cookie';
-	import {nextEvent, movies} from '$lib/Stores';
+	import { nextEvent } from '$lib/Stores';
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
+	import { isMovieGuard } from '$lib/utils';
 
 	interface ICastVote {
 		movieId?: number;
@@ -40,7 +41,7 @@
 				eventDate: $nextEvent?.date
 			};
 			Cookies.set('vote', JSON.stringify(previousVote), {
-				expires: 2^31
+				expires: 2 ^ 31
 			});
 
 			const date = new Date();
@@ -62,18 +63,33 @@
 			}
 		}
 	};
+
+	const fakeCard = {
+		overview: 'No movies at this time!',
+		title: '',
+		poster_path: ''
+	};
+	const cardsArray = [1, 2, 3];
 </script>
 
 <div id="cards" on:mousemove={handleMouseMove}>
-	{#each $movies as movie}
-		<Card
-			{mousePos}
-			on:click={handleCardClick(movie)}
-			selected={selected?.id === movie.id}
-			{movie}
-			showMoviePoster={!!$nextEvent?.date}
-		/>
-	{/each}
+	{#if $nextEvent?.contestants}
+		{#each $nextEvent.contestants as movie}
+			{#if isMovieGuard(movie)}
+				<Card
+					{mousePos}
+					on:click={handleCardClick(movie)}
+					selected={selected?.id === movie.id}
+					{...movie}
+					showMoviePoster={!!$nextEvent?.date}
+				/>
+			{/if}
+		{/each}
+	{:else}
+		{#each cardsArray as n}
+			<Card {mousePos} selected={false} {...fakeCard} showMoviePoster={false} />
+		{/each}
+	{/if}
 </div>
 <VoteButton
 	selected={selected?.title}

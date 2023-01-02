@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { mode } from '$lib/Stores';
 	import MoviePoster from '$lib/MoviePoster.svelte';
-	import type { IMovie } from '$lib/schema/movie.schema';
 	export let mousePos: { x: number; y: number };
 	export let selected: boolean = false;
-	export let movie: IMovie;
+	export let overview: string;
+	export let poster_path: string;
+	export let title: string;
 	export let showMoviePoster: boolean = true;
 	let self: any;
 
@@ -27,7 +28,7 @@
 					<span class="quote">“</span>
 				</div>
 				<blockquote>
-					{movie.overview}
+					{overview}
 				</blockquote>
 				<div class="right">
 					<span class="quote">”</span>
@@ -35,8 +36,8 @@
 			</div>
 
 			<MoviePoster
-				imageUrl={movie.poster_path}
-				imageAlt={`A poster for the movie '${movie.title}`}
+				imageUrl={poster_path}
+				imageAlt={`A poster for the movie '${title}`}
 			/>
 		{:else}
 			<div id="flashlight">

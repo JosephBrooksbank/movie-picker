@@ -18,7 +18,8 @@ export interface IMovie {
     video: boolean,
     vote_average: number, // tmdb votes
     vote_count: number, // tmdb votes
-    votes: number
+    votes: number,
+    watched?: boolean,
 }
 
 export const movieSchema = new Schema<IMovie>({
@@ -38,7 +39,8 @@ export const movieSchema = new Schema<IMovie>({
     video: Boolean,
     vote_average: Number, // TMDB votes
     vote_count: Number, // TMDB votes
-    votes: Number
+    votes: Number,
+    watched: Boolean,
 })
 
 export const Movie = model('Movie', movieSchema);

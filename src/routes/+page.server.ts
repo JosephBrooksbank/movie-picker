@@ -1,6 +1,5 @@
 import { Movie, type IMovie } from '$lib/schema/movie.schema';
 import { Party } from '$lib/schema/party.schema';
-import { getMovies } from '$lib/server/mongoose';
 import { pojo } from '$lib/utils';
 import dayjs from 'dayjs';
 import type { PageServerLoad } from './$types';
@@ -19,13 +18,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		const winner = await Movie.findOne().sort({ votes: 'descending' });
 		if (winner) {
 			await Party.updateOne({ _id: nextParty._id }, { winner: winner._id });
+			winner.watched = true;
 		}
 		// Voting not over, return voting time
 	}
 
-
 	return {
-		movies: pojo(nextParty.contestants),
 		nextParty: pojo(nextParty),
 		isAuth: cookies.get('isAuth')
 	};
