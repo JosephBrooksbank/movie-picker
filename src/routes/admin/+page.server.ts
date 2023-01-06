@@ -1,5 +1,5 @@
 import { Party, type IParty } from '$lib/schema/party.schema';
-import { getMovies } from '$lib/server/mongoose';
+import { getMovies, pickContestantMoviesForEvent } from '$lib/server/mongoose';
 import { pojo } from '$lib/utils';
 import type { Load } from '@sveltejs/kit';
 import dayjs, { type ManipulateType } from 'dayjs';
@@ -34,7 +34,7 @@ export const actions: Actions = {
 
 		const votingEnds = date.subtract(formOffset, formUnit);
 		// TODO allow overriding of this
-		const contestants = await (await getMovies(3)).map(movie => movie._id);
+		const contestants = await pickContestantMoviesForEvent();
 
 		const response = await Party.create({ date, votingEnds, contestants });
 		console.log(response);
