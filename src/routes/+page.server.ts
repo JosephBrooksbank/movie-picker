@@ -2,6 +2,7 @@ import { Movie, type IMovie } from '$lib/schema/movie.schema';
 import { Party } from '$lib/schema/party.schema';
 import { pojo } from '$lib/utils';
 import dayjs from 'dayjs';
+import mongoose from 'mongoose';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -19,6 +20,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		if (winner) {
 			await Party.updateOne({ _id: nextParty._id }, { winner: winner._id });
 			winner.watched = true;
+
+			await winner.save();
+			await Party.updateMany({}, {votes: 0});
 		}
 		// Voting not over, return voting time
 	}
