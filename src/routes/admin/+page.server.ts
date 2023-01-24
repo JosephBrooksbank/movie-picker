@@ -10,7 +10,22 @@ import type { Actions } from './$types';
 
 export const load: Load = async () => {
 	return {
-		movies: getMovies(),
+		movies: (await getMovies()).sort((a,b) => {
+			if (a.votes > b.votes) {
+				return -1;
+			} else if (a.votes < b.votes) {
+				return 1;
+			} else {
+				// equal votes
+				if (a.dateAdded > b.dateAdded) {
+					return -1;
+				} else if (a.dateAdded < b.dateAdded) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		}),
 		events: pojo(await Party.find()) as IParty[]
 	};
 };
