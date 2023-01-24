@@ -6,6 +6,7 @@
         --light-gray: #626c80;
         --dark-gray: #21252b;
         --darker-gray: rgba(23,23,23,1);
+        --green: #3ba55c;
 
 
         --bg-color: var(--gray);

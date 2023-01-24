@@ -96,7 +96,7 @@
 	}
 
 	.selected {
-		background-color: #3ba55c !important;
+		background-color: var(--green) !important;
 	}
 	#flashlight {
 		/* position: relative; */

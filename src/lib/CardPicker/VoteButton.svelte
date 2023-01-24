@@ -59,7 +59,7 @@
 		/* transition: background-color 500ms; */
 	}
 	button {
-		background-color: var(--dark-gray);
+		background-color: var(--green);
 	}
 
 	.open {
