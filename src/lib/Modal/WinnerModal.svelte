@@ -1,9 +1,9 @@
 <script lang="ts">
 	import MoviePoster from '$lib/MoviePoster.svelte';
-	import type { IMovie } from '$lib/schema/movie.schema';
 	import type { IParty } from '$lib/schema/party.schema';
 	import { nextEvent } from '$lib/Stores';
 	import { isMovieGuard } from '$lib/utils';
+	import dayjs from 'dayjs';
 	import Cookies from 'js-cookie';
 	import { onMount } from 'svelte';
 	import Modal from './Modal.svelte';
@@ -20,14 +20,16 @@
 
 		} else {
 			const mostRecentEvent = await (await fetch('/api/db/get/most-recent-event')).json();
-			if (mostRecentEvent.winner) {
+			const hoursSinceEvent =  dayjs().diff(mostRecentEvent.date, 'hours');
+
+			if (mostRecentEvent.winner && hoursSinceEvent < 8) {
 				showModal = true;
 				currentEvent = mostRecentEvent;
 			}
 		}
 
 
-		// If already seen, don't show again.
+			// If already seen, don't show again.
 			if (Cookies.get('winnerSeen') === currentEvent?._id) {
 				showModal = false;
 			}
