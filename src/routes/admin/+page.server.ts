@@ -26,7 +26,7 @@ export const load: Load = async () => {
 				}
 			}
 		}),
-		events: pojo(await Party.find()) as IParty[]
+		events: pojo(await Party.find({date: {$gt: new Date()}})) as IParty[]
 	};
 };
 
