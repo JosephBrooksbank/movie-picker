@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
-import { Schema, model, Types} from 'mongoose';
+import { Schema, model, Types, models} from 'mongoose';
 import type { IMovie } from './movie.schema';
 
 export interface IParty {
+    _id?: string,
     date: Date,
     votingEnds: Date,
     winner?: Types.ObjectId | IMovie,
@@ -21,4 +22,5 @@ export const partySchema = new Schema<IParty>({
     contestants: [{ type: Schema.Types.ObjectId, ref: 'Movie'}]
 })
 
-export const Party = model('Party', partySchema);
+// Trick for HMR, which doesn't like defining models multiple times.
+export const Party = models['Party'] ?? model('Party', partySchema);

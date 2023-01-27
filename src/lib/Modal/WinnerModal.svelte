@@ -1,36 +1,56 @@
 <script lang="ts">
 	import MoviePoster from '$lib/MoviePoster.svelte';
+	import type { IMovie } from '$lib/schema/movie.schema';
+	import type { IParty } from '$lib/schema/party.schema';
 	import { nextEvent } from '$lib/Stores';
 	import { isMovieGuard } from '$lib/utils';
 	import Cookies from 'js-cookie';
+	import { onMount } from 'svelte';
 	import Modal from './Modal.svelte';
 
-	export let showModal = !!$nextEvent?.winner;
+	export let showModal = false;
+	let currentEvent: IParty | null = null;
 
-	if ($nextEvent?.date) {
-		if (Cookies.get('winnerSeen') === $nextEvent?.date.toString()) {
-			showModal = false;
+	onMount(async () => {
+
+		// case when there is an upcoming event and voting has ended for that event.
+		if ($nextEvent && $nextEvent?.votingEnds < new Date() && isMovieGuard($nextEvent.winner)) {
+			showModal = true;
+			currentEvent = $nextEvent;
+
+		} else {
+			const mostRecentEvent = await (await fetch('/api/db/get/most-recent-event')).json();
+			if (mostRecentEvent.winner) {
+				showModal = true;
+				currentEvent = mostRecentEvent;
+			}
 		}
-	}
+
+
+		// If already seen, don't show again.
+			if (Cookies.get('winnerSeen') === currentEvent?._id) {
+				showModal = false;
+			}
+	});
 
 	const handleModalDismiss = () => {
 		showModal = false;
-		Cookies.set('winnerSeen', $nextEvent?.date.toString() ?? '', {
+		Cookies.set('winnerSeen', currentEvent?._id ?? '', {
 			expires: 2 ^ 31
 		});
 	};
+	
 </script>
-
-{#if $nextEvent?.winner && isMovieGuard($nextEvent.winner)}
+{#if currentEvent?.winner && isMovieGuard(currentEvent.winner)}
 	<Modal show={showModal} on:click={handleModalDismiss}>
 		<div>
 			<h1>🎊Winner!🎊</h1>
 			<MoviePoster
-				imageUrl={$nextEvent.winner.poster_path}
-				imageAlt={`Poster for ${$nextEvent.winner.title}`}
+				imageUrl={currentEvent.winner.poster_path}
+				imageAlt={`Poster for ${currentEvent.winner.title}`}
 				width="100%"
 			/>
-			<h1>{$nextEvent.winner.title}</h1>
+			<h1>{currentEvent.winner.title}</h1>
 		</div>
 	</Modal>
 {/if}
