@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose from 'mongoose';
 
 export interface IMovie {
     _id?: string,
@@ -22,7 +22,7 @@ export interface IMovie {
     watched?: boolean,
 }
 
-export const movieSchema = new Schema<IMovie>({
+export const movieSchema = new mongoose.Schema<IMovie>({
     id: Number,
     adult: Boolean,
     backdrop_path: String,
@@ -44,4 +44,4 @@ export const movieSchema = new Schema<IMovie>({
 })
 
 // Trick for HMR, which doesn't like defining models multiple times.
-export const Movie = models['Movie'] ?? model('Movie', movieSchema);
+export const Movie = mongoose.models['Movie'] ?? mongoose.model('Movie', movieSchema);
