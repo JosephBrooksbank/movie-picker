@@ -23,12 +23,11 @@ export const getMovies: (count?: number) => Promise<IMovie[]> = async (count?: n
 	return JSON.parse(JSON.stringify(await query.exec()));
 };
 
-export const pickContestantMoviesForEvent = async (count = 3) => {
+export const pickContestantMoviesForEvent = async (count = 3, excludedIds = []) => {
 	const MAX_TIME_WEIGHT = 5;
 	const PRIORITY_WEIGHTING = 1;
 
-	const selectedMovieIds: string[] = [];
-	const selectedMovieTitles: string[] = [];
+	const selectedMovies: IMovie[] = [];
 
 	const oldestDate = (await Movie.findOne({watched: {$ne: true}}).sort({ dateAdded: 1 }).exec())?.dateAdded;
 	if (!oldestDate) {
@@ -45,7 +44,7 @@ export const pickContestantMoviesForEvent = async (count = 3) => {
 
 	for (let i = 0; i < count; i++) {
 		let totalWeight = 0;
-		const allMovies = await Movie.find({ watched: {$ne: true}, _id: { $nin: selectedMovieIds } });
+		const allMovies = await Movie.find({ watched: {$ne: true}, _id: { $nin: [...selectedMovies.map(m => m._id), ...excludedIds] } });
 		let selected = null;
 		for (const movie of allMovies) {
 			const timeFromAdded = dayjs().diff(movie.dateAdded, 'days');
@@ -59,12 +58,11 @@ export const pickContestantMoviesForEvent = async (count = 3) => {
 			totalWeight += weight;
 		}
 		if (selected) {
-			selectedMovieTitles.push(selected.title);
-			selectedMovieIds.push(selected._id);
+			selectedMovies.push(selected);
 		}
 	}
 
-	return selectedMovieIds;
+	return selectedMovies;
 };
 
 export const updateMovies = async (documents: IMovie[]) => {

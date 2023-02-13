@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import MoviePoster from '$lib/MoviePoster.svelte';
+	import type { IMovie } from '$lib/schema/movie.schema';
 	import dayjs from 'dayjs';
 	import timezone from 'dayjs/plugin/timezone';
 	import utc from 'dayjs/plugin/utc';
+	import RemoveableMovie from './components/RemoveableMovie.svelte';
 	import EventData from './EventData.svelte';
 	import MovieData from './MovieData.svelte';
 	export let data: import('./$types').PageData;
-	let showEventForm: boolean = true;
+	let showEventForm: boolean = false;
+	let newEventMovies: IMovie[] = [];
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
@@ -28,32 +33,75 @@
 		invalidateAll();
 	};
 
-	const votingUnits = [
-		'days',
-		'hours',
-		'minutes'
-	]
+	const votingUnits = ['days', 'hours', 'minutes'];
+
+	const handleAddEventButtonClick = async () => {
+		showEventForm = !showEventForm;
+		if (showEventForm) {
+			newEventMovies = await (
+				await fetch('/api/db/get/movies', {
+					method: 'POST',
+					body: JSON.stringify({
+						count: 3
+					})
+				})
+			).json();
+		}
+	};
+
+	const exhangeMovie = async (index: number) => {
+		const newMovie = await (
+			await fetch('/api/db/get/movies', {
+				method: 'POST',
+				body: JSON.stringify({
+					count: 1,
+					excludedIds: newEventMovies.map((m) => m._id)
+				})
+			})
+		).json();
+
+		newEventMovies[index] = newMovie[0];
+	};
+
 </script>
 
 <h1>Admin Settings</h1>
 
 <h2>Add Event</h2>
-<button on:click={() => (showEventForm = !showEventForm)}>Add Event</button>
-<form method="POST" action="?/newEvent" class="add-event-form {showEventForm} use:enhance">
+<button on:click={handleAddEventButtonClick}>Add Event</button>
+<form
+	method="POST"
+	action="?/newEvent"
+	class="add-event-form {showEventForm} use:enhance"
+	use:enhance={({ form, data, action, cancel}) => {
+		showEventForm = false;
+	}}
+>
 	<label for="date">Day of event:</label>
 	<input type="date" name="date" />
 	<label for="votingOffset">Voting Ends</label>
 	<div>
 		<input type="number" name="votingOffset" value="2" />
 		<select id="voting-unit" name="offsetUnit">
-			{#each votingUnits as unit} 
-			<option value={unit}>{unit}</option>
+			{#each votingUnits as unit}
+				<option value={unit}>{unit}</option>
 			{/each}
 		</select>
 	</div>
 	<label for="votingOffset">Before event</label>
+	<div class="movies_container">
+		{#each newEventMovies as movie, index}
+			<RemoveableMovie on:click={() => exhangeMovie(index)}>
+				<div>
+				<MoviePoster imageUrl={movie.poster_path} imageAlt={movie.title} width="70px" />
+				<div>{movie.title}</div>
+				</div>
+			</RemoveableMovie>
+		{/each}
+	</div>
 	<button type="submit">Save Event</button>
 	<input type="submit" style="display: none" />
+	<input value={JSON.stringify(newEventMovies)} style="display: none" name='movies'/>
 </form>
 <h2>Existing Events</h2>
 <EventData events={data.events} />
@@ -64,13 +112,27 @@
 		<button>Save</button>
 	</div>
 	<div id="container">
-		{#each data.movies as movie}
+		{#each data.movies as movie, index}
 			<MovieData bind:movie on:delete={handleDelete} />
 		{/each}
 	</div>
 </form>
 
 <style>
+	.change_movie_button {
+		position: relative;
+	}
+	.change_movie_button::after {
+		position: absolute;
+		background-color: black;
+		z-index: 100;
+		width: 100%;
+		height: 100%;
+	}
+	.movies_container {
+		display: flex;
+		gap: 16px;
+	}
 	[type='date'] {
 		background: #fff
 			url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97%
@@ -114,7 +176,7 @@
 	}
 
 	.add-event-form.true {
-		height: 300px;
+		height: 410px;
 	}
 
 	.add-event-form button {

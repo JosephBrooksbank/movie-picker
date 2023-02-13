@@ -1,5 +1,6 @@
+import type { IMovie } from '$lib/schema/movie.schema';
 import { Party, type IParty } from '$lib/schema/party.schema';
-import { getMovies, pickContestantMoviesForEvent } from '$lib/server/mongoose';
+import { getMovies } from '$lib/server/mongoose';
 import { pojo } from '$lib/utils';
 import type { Load } from '@sveltejs/kit';
 import dayjs, { type ManipulateType } from 'dayjs';
@@ -36,6 +37,7 @@ export const actions: Actions = {
 		const formDate = data.get('date') as string;
 		const formOffset = to_number(data.get('votingOffset'));
 		const formUnit = data.get('offsetUnit') as ManipulateType;
+		const contestants = JSON.parse(data.get('movies') as string).map((m: IMovie) => m._id)
 
         dayjs.extend(timezone);
         dayjs.extend(utc);
@@ -48,10 +50,7 @@ export const actions: Actions = {
         }
 
 		const votingEnds = date.subtract(formOffset, formUnit);
-		// TODO allow overriding of this
-		const contestants = await pickContestantMoviesForEvent();
 
-		const response = await Party.create({ date, votingEnds, contestants });
-		console.log(response);
+		await Party.create({ date, votingEnds, contestants });
 	}
 };
