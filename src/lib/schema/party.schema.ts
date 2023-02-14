@@ -10,6 +10,19 @@ export interface IParty {
     contestants: mongoose.Types.ObjectId[] | IMovie[]
 }
 
+interface IContestant {
+    movie: mongoose.Types.ObjectId | IMovie;
+    votes: number;
+}
+
+const contestantSchema = new mongoose.Schema<IContestant>({
+    movie: {type: mongoose.Schema.Types.ObjectId, ref: 'Movie'},
+    votes: {
+        type: Number,
+        default: 0
+    }
+})
+
 export const partySchema = new mongoose.Schema<IParty>({
     date: Date,
     votingEnds: {
@@ -19,7 +32,9 @@ export const partySchema = new mongoose.Schema<IParty>({
         }
     },
     winner: {type: mongoose.Schema.Types.ObjectId, ref: "Movie"},
-    contestants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+    contestants: [
+        contestantSchema
+    ]
 })
 
 // Trick for HMR, which doesn't like defining models multiple times.
