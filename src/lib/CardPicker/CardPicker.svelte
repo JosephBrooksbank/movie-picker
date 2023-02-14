@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
-	import { isMovieGuard } from '$lib/utils';
+	import { isContestantGuard, isMovieGuard } from '$lib/utils';
 
 	interface ICastVote {
 		movieId?: number;
@@ -74,15 +74,19 @@
 
 <div id="cards" on:mousemove={handleMouseMove}>
 	{#if $nextEvent?.contestants}
-		{#each $nextEvent.contestants as movie}
-			{#if isMovieGuard(movie)}
+		{#each $nextEvent.contestants as contestant}
+		{#if isContestantGuard(contestant)}
+			{#if isMovieGuard(contestant.movie)}
 				<Card
 					{mousePos}
-					on:click={handleCardClick(movie)}
-					selected={selected?.id === movie.id}
-					{...movie}
+					on:click={handleCardClick(contestant.movie)}
+					selected={selected?.id === contestant.movie.id}
+					overview={contestant.movie.overview}
+					title={contestant.movie.title}
+					poster_path={contestant.movie.poster_path}
 					showMoviePoster={!!$nextEvent?.date}
 				/>
+			{/if}
 			{/if}
 		{/each}
 	{:else}

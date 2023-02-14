@@ -1,5 +1,5 @@
 import { Movie, type IMovie } from '$lib/schema/movie.schema';
-import { Party } from '$lib/schema/party.schema';
+import { Party, type IContestant } from '$lib/schema/party.schema';
 import { pojo } from '$lib/utils';
 import dayjs from 'dayjs';
 import type { PageServerLoad } from './$types';
@@ -7,7 +7,13 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ cookies }) => {
 	const parties = await Party.find({ date: { $gt: new Date() } })
 		.populate<{ winner: IMovie }>('winner')
-		.populate<{ contestants: IMovie[] }>('contestants')
+		.populate({
+			path: 'contestants',
+			populate: {
+				path: 'movie',
+				model: 'Movie'
+			}
+		})
 		.limit(1)
 		.sort({ date: 1 });
 

@@ -10,7 +10,7 @@ export interface IParty {
     contestants: mongoose.Types.ObjectId[] | IContestant[]
 }
 
-interface IContestant {
+export interface IContestant {
     movie: mongoose.Types.ObjectId | IMovie;
     votes: number;
 }
