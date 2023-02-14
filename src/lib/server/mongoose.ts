@@ -1,6 +1,6 @@
 import { Movie, type IMovie } from '$lib/schema/movie.schema';
 import type mongoose from 'mongoose';
-import type { TMDBMovie } from 'src/types/TMDB';
+import type { TMDBMovie } from '../../types/TMDB';
 import dayjs from 'dayjs';
 
 export const createMovie = async (document: TMDBMovie) => {

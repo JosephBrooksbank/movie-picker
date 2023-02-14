@@ -127,13 +127,6 @@
 		font-size: 1.5vmax;
 	}
 
-	img {
-		object-fit: cover;
-		aspect-ratio: 67.5/100;
-		width: 100%;
-		border-radius: 10px;
-		opacity: 0.8;
-	}
 	.card {
 		--card-color: rgba(255, 255, 255, 0.1);
 		cursor: pointer;

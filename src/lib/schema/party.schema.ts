@@ -7,7 +7,7 @@ export interface IParty {
     date: Date,
     votingEnds: Date,
     winner?: mongoose.Types.ObjectId | IMovie,
-    contestants: mongoose.Types.ObjectId[] | IMovie[]
+    contestants: mongoose.Types.ObjectId[] | IContestant[]
 }
 
 interface IContestant {

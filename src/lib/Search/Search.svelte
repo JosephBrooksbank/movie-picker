@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MovieSearchReponse, TMDBMovie } from 'src/types/TMDB';
+	import type { MovieSearchReponse, TMDBMovie } from '../../types/TMDB';
 	import { slide } from 'svelte/transition';
 	import Result from './Result.svelte';
 	import SearchBar from './SearchBar.svelte';
@@ -68,14 +68,6 @@
 		min-height: 50px;
 		position: relative;
 		z-index: 10;
-	}
-
-	#toolbar {
-		/*  */
-		width: calc(100% + 32px);
-		display: flex;
-		align-items: center;
-		gap: 8px;
 	}
 
 	#search-results {

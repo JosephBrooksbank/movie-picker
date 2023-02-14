@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TMDBMovie } from "src/types/TMDB";
+	import type { TMDBMovie } from "../../types/TMDB";
 	import { createEventDispatcher } from "svelte";
 	import { fly } from 'svelte/transition';
 

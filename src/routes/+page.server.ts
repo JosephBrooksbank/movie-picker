@@ -2,7 +2,6 @@ import { Movie, type IMovie } from '$lib/schema/movie.schema';
 import { Party } from '$lib/schema/party.schema';
 import { pojo } from '$lib/utils';
 import dayjs from 'dayjs';
-import mongoose from 'mongoose';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
