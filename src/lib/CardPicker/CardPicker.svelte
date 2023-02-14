@@ -52,7 +52,7 @@
 				...selected
 			};
 
-			const response = await fetch('/api/db/add/vote', {
+			const response = await fetch('/api/votes/add', {
 				method: 'POST',
 				body: JSON.stringify(body)
 			});

@@ -16,7 +16,7 @@
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
 	const handleMoviesSubmit = async () => {
-		const response = await fetch('/api/db/update/movie', {
+		const response = await fetch('/api/movies/update', {
 			method: 'POST',
 			body: JSON.stringify(data.movies)
 		});
@@ -25,7 +25,7 @@
 	};
 
 	const handleDelete = async (event: CustomEvent<{ movieId: string }>) => {
-		const response = await fetch('/api/db/delete/movie', {
+		const response = await fetch('/api/movies/delete', {
 			method: 'POST',
 			body: JSON.stringify({ id: event.detail.movieId })
 		});
@@ -39,7 +39,7 @@
 		showEventForm = !showEventForm;
 		if (showEventForm) {
 			newEventMovies = await (
-				await fetch('/api/db/get/movies', {
+				await fetch('/api/movies/get', {
 					method: 'POST',
 					body: JSON.stringify({
 						count: 3
@@ -51,7 +51,7 @@
 
 	const exhangeMovie = async (index: number) => {
 		const newMovie = await (
-			await fetch('/api/db/get/movies', {
+			await fetch('/api/movies/get', {
 				method: 'POST',
 				body: JSON.stringify({
 					count: 1,

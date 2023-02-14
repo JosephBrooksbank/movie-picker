@@ -33,7 +33,7 @@
 			priority: 2
 		};
 
-		const response = await fetch('/api/db/add/movie', {
+		const response = await fetch('/api/movies/add', {
 			method: 'POST',
 			body: JSON.stringify(body)
 		});

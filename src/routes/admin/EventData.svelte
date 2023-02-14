@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
 	import type { IParty } from '$lib/schema/party.schema';
 	import dayjs from 'dayjs';
 
@@ -16,7 +15,7 @@
     });
 
     const handleDelete = async (date: Date) => {
-        await fetch('/api/db/delete/event', {
+        await fetch('/api/parties/delete', {
             method: "POST",
             body: JSON.stringify({date})
         });

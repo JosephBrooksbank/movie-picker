@@ -19,7 +19,7 @@
 			currentEvent = $nextEvent;
 
 		} else {
-			const mostRecentEvent = await (await fetch('/api/db/get/most-recent-event')).json();
+			const mostRecentEvent = await (await fetch('/api/parties/get')).json();
 			const hoursSinceEvent =  dayjs().diff(mostRecentEvent.date, 'hours');
 
 			if (mostRecentEvent.winner && hoursSinceEvent < 8) {
