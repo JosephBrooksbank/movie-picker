@@ -16,7 +16,6 @@ export const GET: RequestHandler = async () => {
 			}
 		})
 		.exec();
-        console.log(response)
 
 	return json(pojo(response));
 };
