@@ -14,6 +14,7 @@
 
 	let previousVote: ICastVote = {};
 	let selected: IContestant | null;
+	let justVoted = false;
 
 	let mousePos = { x: 0, y: 0 };
 
@@ -40,6 +41,7 @@
 				contestantId: selected._id,
 				eventDate: $nextEvent?.date
 			};
+			justVoted = true;
 			Cookies.set('vote', JSON.stringify(previousVote), {
 				expires: 2 ^ 31
 			});
@@ -99,6 +101,7 @@
 <VoteButton
 	selected={isMovieGuard(selected?.movie) ? selected?.movie.title : null}
 	on:click={handleVoteClick}
+	justVoted={justVoted}
 	alreadyVoted={$nextEvent?.date == previousVote.eventDate}
 />
 

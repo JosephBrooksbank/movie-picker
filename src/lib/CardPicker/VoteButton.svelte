@@ -5,6 +5,7 @@
 	import { fade } from 'svelte/transition';
 
 	export let selected: string | null | undefined;
+	export let justVoted: boolean = false;
 	export let alreadyVoted: boolean = false;
 	let activeClass = '';
 
@@ -30,6 +31,11 @@
 		<div class="submit closed">
 			🎊 Winner: {$nextEvent.winner.title} 🎊
 		</div>
+	{:else if justVoted}
+		<div class="submit closed">
+			Thanks for voting!
+			<i class="fa-solid fa-circle-check" />
+		</div>
 	{:else if alreadyVoted}
 		<div class="submit closed">
 			Already voted
@@ -52,7 +58,7 @@
 	{/if}
 </div>
 
-<style>	
+<style>
 	.anim {
 		opacity: 0;
 		position: absolute;
@@ -73,7 +79,7 @@
 		opacity: 1;
 	}
 	.end.finished i {
-		animation: scale 500ms linear; 
+		animation: scale 500ms linear;
 	}
 	.buttonText.active {
 		opacity: 0;
