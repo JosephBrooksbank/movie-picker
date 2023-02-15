@@ -9,9 +9,16 @@
 	};
 </script>
 
-<i class="fa-solid fa-circle-info fa-lg" on:click={handleClick} /><p>👈🏻 click this for movie info!</p>
-
+<div>
+<i class="fa-solid fa-circle-info fa-lg" on:click={handleClick} />
+<p>👈🏻click this!</p>
+</div>
 <style>
+	div {
+		display: flex;
+		align-items: center;
+		gap: 2px;
+	}
 	i:hover {
 		filter: brightness(50%);
 	}
@@ -19,7 +26,5 @@
 		cursor: pointer;
 		margin: 0;
 		margin-left: 10px;
-		margin-right: -10px;
 	}
-
 </style>
