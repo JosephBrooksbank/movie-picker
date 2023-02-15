@@ -2,7 +2,7 @@ import type { IMovie } from './schema/movie.schema';
 import type { IContestant, IParty } from './schema/party.schema';
 
 export const isPlainObject = (obj: unknown): obj is Record<PropertyKey, unknown> => {
-    return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
+	return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
 };
 
 export const pojo = <T>(obj: T): T => {
@@ -23,11 +23,11 @@ export const isPartyGuard = (obj: IParty | any): obj is IParty => {
 	return obj && obj.date && obj.votingEnds && obj.contestants && obj.contestants.length > 0;
 };
 
-export const isContestantGuard = (obj: unknown): obj is IContestant => {
+export const isContestantGuard = (obj: unknown): obj is IContestant & { movie: IMovie } => {
 	if (!isPlainObject(obj)) return false;
-	const {movie, votes} = obj;
+	const { movie, votes } = obj;
 
 	if (typeof votes !== 'number') return false;
-	if (typeof movie !== 'object') return false;
+	if (!isMovieGuard(movie)) return false;
 	return true;
-}
+};

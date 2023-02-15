@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import CurrentResults from '$lib/CurrentResults/CurrentResults.svelte';
 	import MoviePoster from '$lib/MoviePoster.svelte';
 	import type { IMovie } from '$lib/schema/movie.schema';
 	import dayjs from 'dayjs';
@@ -62,7 +63,6 @@
 
 		newEventMovies[index] = newMovie[0];
 	};
-
 </script>
 
 <h1>Admin Settings</h1>
@@ -73,7 +73,7 @@
 	method="POST"
 	action="?/newEvent"
 	class="add-event-form {showEventForm} use:enhance"
-	use:enhance={({ form, data, action, cancel}) => {
+	use:enhance={({ form, data, action, cancel }) => {
 		showEventForm = false;
 	}}
 >
@@ -93,19 +93,26 @@
 		{#each newEventMovies as movie, index}
 			<RemoveableMovie on:click={() => exhangeMovie(index)}>
 				<div>
-				<MoviePoster imageUrl={movie.poster_path} imageAlt={movie.title} width="70px" />
-				<div>{movie.title}</div>
+					<MoviePoster imageUrl={movie.poster_path} imageAlt={movie.title} width="70px" />
+					<div>{movie.title}</div>
 				</div>
 			</RemoveableMovie>
 		{/each}
 	</div>
 	<button type="submit">Save Event</button>
 	<input type="submit" style="display: none" />
-	<input value={JSON.stringify(newEventMovies)} style="display: none" name='movies'/>
+	<input value={JSON.stringify(newEventMovies)} style="display: none" name="movies" />
 </form>
-<h2>Existing Events</h2>
-<EventData events={data.events} />
-
+<div class="flex-container">
+	<div class="flex-obj">
+		<h2>Existing Events</h2>
+		<EventData events={data.events} />
+	</div>
+	<div class="flex-obj">
+		<h2>Current Event</h2>
+		<CurrentResults />
+	</div>
+</div>
 <h2>Movie settings</h2>
 <form method="POST" on:submit|preventDefault={handleMoviesSubmit}>
 	<div id="button-row">
@@ -119,6 +126,16 @@
 </form>
 
 <style>
+	.flex-obj {
+		flex-grow: 1;
+	}
+	.flex-container {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		flex-grow: 1;
+	}
 	.change_movie_button {
 		position: relative;
 	}

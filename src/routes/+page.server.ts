@@ -1,5 +1,5 @@
 import { Movie, type IMovie } from '$lib/schema/movie.schema';
-import { Party, type IContestant } from '$lib/schema/party.schema';
+import { Party } from '$lib/schema/party.schema';
 import { pojo } from '$lib/utils';
 import dayjs from 'dayjs';
 import type { PageServerLoad } from './$types';
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 			winner.watched = true;
 
 			await winner.save();
-			await Party.updateMany({}, {votes: 0});
+			await Party.updateMany({}, { votes: 0 });
 		}
 		// Voting not over, return voting time
 	}

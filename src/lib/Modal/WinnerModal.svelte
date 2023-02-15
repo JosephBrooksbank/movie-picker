@@ -12,15 +12,13 @@
 	let currentEvent: IParty | null = null;
 
 	onMount(async () => {
-
 		// case when there is an upcoming event and voting has ended for that event.
 		if ($nextEvent && $nextEvent?.votingEnds < new Date() && isMovieGuard($nextEvent.winner)) {
 			showModal = true;
 			currentEvent = $nextEvent;
-
 		} else {
-			const mostRecentEvent = await (await fetch('/api/parties/get')).json();
-			const hoursSinceEvent =  dayjs().diff(mostRecentEvent.date, 'hours');
+			const mostRecentEvent = await (await fetch('/api/parties/get-last-ended')).json();
+			const hoursSinceEvent = dayjs().diff(mostRecentEvent.date, 'hours');
 
 			if (mostRecentEvent.winner && hoursSinceEvent < 8) {
 				showModal = true;
@@ -28,11 +26,10 @@
 			}
 		}
 
-
-			// If already seen, don't show again.
-			if (Cookies.get('winnerSeen') === currentEvent?._id) {
-				showModal = false;
-			}
+		// If already seen, don't show again.
+		if (Cookies.get('winnerSeen') === currentEvent?._id) {
+			showModal = false;
+		}
 	});
 
 	const handleModalDismiss = () => {
@@ -41,8 +38,8 @@
 			expires: 2 ^ 31
 		});
 	};
-	
 </script>
+
 {#if currentEvent?.winner && isMovieGuard(currentEvent.winner)}
 	<Modal show={showModal} on:click={handleModalDismiss}>
 		<div>

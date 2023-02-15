@@ -1,5 +1,5 @@
 import type { IMovie } from '$lib/schema/movie.schema';
-import { Party, type IContestant, type IParty } from '$lib/schema/party.schema';
+import { Party, type IParty } from '$lib/schema/party.schema';
 import { getMovies } from '$lib/server/mongoose';
 import { pojo } from '$lib/utils';
 import type { Load } from '@sveltejs/kit';
