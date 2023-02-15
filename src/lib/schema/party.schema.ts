@@ -11,6 +11,7 @@ export interface IParty {
 }
 
 export interface IContestant {
+    _id?: string,
     movie: mongoose.Types.ObjectId | IMovie;
     votes: number;
 }

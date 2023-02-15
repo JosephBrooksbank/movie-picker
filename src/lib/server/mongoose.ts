@@ -2,6 +2,7 @@ import { Movie, type IMovie } from '$lib/schema/movie.schema';
 import type mongoose from 'mongoose';
 import type { TMDBMovie } from '../../types/TMDB';
 import dayjs from 'dayjs';
+import { Party } from '$lib/schema/party.schema';
 
 export const createMovie = async (document: TMDBMovie) => {
 	// Adding movie if it doesn't exist
@@ -29,7 +30,11 @@ export const pickContestantMoviesForEvent = async (count = 3, excludedIds = []) 
 
 	const selectedMovies: IMovie[] = [];
 
-	const oldestDate = (await Movie.findOne({watched: {$ne: true}}).sort({ dateAdded: 1 }).exec())?.dateAdded;
+	const oldestDate = (
+		await Movie.findOne({ watched: { $ne: true } })
+			.sort({ dateAdded: 1 })
+			.exec()
+	)?.dateAdded;
 	if (!oldestDate) {
 		return [];
 	}
@@ -44,13 +49,16 @@ export const pickContestantMoviesForEvent = async (count = 3, excludedIds = []) 
 
 	for (let i = 0; i < count; i++) {
 		let totalWeight = 0;
-		const allMovies = await Movie.find({ watched: {$ne: true}, _id: { $nin: [...selectedMovies.map(m => m._id), ...excludedIds] } });
+		const allMovies = await Movie.find({
+			watched: { $ne: true },
+			_id: { $nin: [...selectedMovies.map((m) => m._id), ...excludedIds] }
+		});
 		let selected = null;
 		for (const movie of allMovies) {
 			const timeFromAdded = dayjs().diff(movie.dateAdded, 'days');
 			const dateWeight = Math.floor(timeFromAdded / bucketSize);
 
-			const weight = dateWeight + (movie.priority * PRIORITY_WEIGHTING);
+			const weight = dateWeight + movie.priority * PRIORITY_WEIGHTING;
 			const r = Math.floor(Math.random() * (totalWeight + weight));
 			if (r >= totalWeight) {
 				selected = movie;
@@ -78,6 +86,14 @@ export const updateMovies = async (documents: IMovie[]) => {
 	return await getMovies();
 };
 
-export const insertVote = async (document: IMovie) => {
-	return await Movie.updateOne({ id: document.id }, { $inc: { votes: 1 } });
+export const insertVote = async (partyId: number, contestantId: number) => {
+
+	await Party.updateOne(
+		{
+			_id: partyId,
+			"contestants._id": contestantId
+		},
+		{ $inc: { "contestants.$.votes": 1}}
+	)
+	return true;
 };

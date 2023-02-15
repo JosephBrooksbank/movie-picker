@@ -1,19 +1,19 @@
 <script lang="ts">
-	import type { IMovie } from '$lib/schema/movie.schema';
 	import Cookies from 'js-cookie';
 	import { nextEvent } from '$lib/Stores';
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import VoteButton from './VoteButton.svelte';
 	import { isContestantGuard, isMovieGuard } from '$lib/utils';
+	import type { IContestant } from '$lib/schema/party.schema';
 
 	interface ICastVote {
-		movieId?: number;
+		contestantId?: string;
 		eventDate?: Date;
 	}
 
 	let previousVote: ICastVote = {};
-	let selected: IMovie | null;
+	let selected: IContestant | null;
 
 	let mousePos = { x: 0, y: 0 };
 
@@ -22,8 +22,8 @@
 		mousePos.y = event.clientY;
 	};
 
-	const handleCardClick = (choice: any) => () => {
-		if (selected?.id === choice.id) {
+	const handleCardClick = (choice: IContestant) => () => {
+		if (selected?._id === choice._id) {
 			selected = null;
 		} else {
 			selected = choice;
@@ -37,7 +37,7 @@
 	const handleVoteClick = async () => {
 		if (selected) {
 			previousVote = {
-				movieId: selected.id,
+				contestantId: selected._id,
 				eventDate: $nextEvent?.date
 			};
 			Cookies.set('vote', JSON.stringify(previousVote), {
@@ -49,7 +49,8 @@
 			const fromMonday = date.getDate() - day + (day == 0 ? -6 : 1); // sunday is 0 day according to date
 			date.setDate(fromMonday);
 			const body = {
-				...selected
+				partyId: $nextEvent?._id,
+				contestantId: selected._id
 			};
 
 			const response = await fetch('/api/votes/add', {
@@ -79,8 +80,8 @@
 			{#if isMovieGuard(contestant.movie)}
 				<Card
 					{mousePos}
-					on:click={handleCardClick(contestant.movie)}
-					selected={selected?.id === contestant.movie.id}
+					on:click={handleCardClick(contestant)}
+					selected={selected?._id === contestant._id}
 					overview={contestant.movie.overview}
 					title={contestant.movie.title}
 					poster_path={contestant.movie.poster_path}
@@ -90,13 +91,13 @@
 			{/if}
 		{/each}
 	{:else}
-		{#each cardsArray as n}
+		{#each [0,1,2] as n}
 			<Card {mousePos} selected={false} {...fakeCard} showMoviePoster={false} />
 		{/each}
 	{/if}
 </div>
 <VoteButton
-	selected={selected?.title}
+	selected={isMovieGuard(selected?.movie) ? selected?.movie.title : null}
 	on:click={handleVoteClick}
 	alreadyVoted={$nextEvent?.date == previousVote.eventDate}
 />
