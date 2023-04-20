@@ -1,4 +1,5 @@
-import type { IMovie } from '$lib/schema/movie.schema';
+//@ts-ignore must import schema to use it
+import { type IMovie } from '$lib/schema/movie.schema';
 import { Party, type IParty } from '$lib/schema/party.schema';
 import { isContestantsGuard, isMovieGuard, isPartyGuard, pojo } from '$lib/utils';
 import dayjs from 'dayjs';
