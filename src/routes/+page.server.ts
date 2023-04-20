@@ -1,6 +1,6 @@
-import { Movie, type IMovie } from '$lib/schema/movie.schema';
-import { Party } from '$lib/schema/party.schema';
-import { pojo } from '$lib/utils';
+import type { IMovie } from '$lib/schema/movie.schema';
+import { Party, type IParty } from '$lib/schema/party.schema';
+import { isContestantsGuard, isMovieGuard, isPartyGuard, pojo } from '$lib/utils';
 import dayjs from 'dayjs';
 import type { PageServerLoad } from './$types';
 
@@ -15,21 +15,22 @@ export const load: PageServerLoad = async ({ cookies }) => {
 			}
 		})
 		.limit(1)
-		.sort({ date: 1 });
+		.sort({ date: 1 }) as IParty[];
 
 	const nextParty = parties[0] ?? {};
 
 	// If the voting is over and a winner hasn't been chosen, get a winner
-	if (dayjs().toDate() > nextParty.votingEnds && !nextParty?.winner) {
-		const winner = await Movie.findOne().sort({ votes: 'descending' });
-		if (winner) {
-			await Party.updateOne({ _id: nextParty._id }, { winner: winner._id });
-			winner.watched = true;
-
-			await winner.save();
-			await Party.updateMany({}, { votes: 0 });
+	if (isPartyGuard(nextParty) && dayjs().toDate() > nextParty.votingEnds && !nextParty.winner) {
+		if (!isContestantsGuard(nextParty.contestants) ) {
+			return;
 		}
-		// Voting not over, return voting time
+		const winner = await nextParty.contestants.sort((a, b) => b.votes - a.votes)[0].movie;
+		if (winner && isMovieGuard(winner)) {
+			nextParty.winner = winner;
+			await nextParty.save();
+			winner.watched = true;
+			await winner.save();
+		}
 	}
 
 	return {

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
-export interface IMovie {
+export interface IMovie extends Document{
     _id?: string,
     id: number,
     adult: boolean,

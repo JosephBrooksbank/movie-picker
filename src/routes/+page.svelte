@@ -23,7 +23,7 @@
 </script>
 
 {#if auth}
-	<WinnerModal bind:showModal={blur} />
+	<WinnerModal bind:showModal={blur} nextEvent={data.nextParty} />
 
 	<div class="outer-container {blur ? 'blur' : ''}">
 		<div class="inner-container">

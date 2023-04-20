@@ -1,7 +1,6 @@
 <script lang="ts">
 	import MoviePoster from '$lib/MoviePoster.svelte';
 	import type { IParty } from '$lib/schema/party.schema';
-	import { nextEvent } from '$lib/Stores';
 	import { isMovieGuard } from '$lib/utils';
 	import dayjs from 'dayjs';
 	import Cookies from 'js-cookie';
@@ -9,13 +8,14 @@
 	import Modal from './Modal.svelte';
 
 	export let showModal = false;
+	export let nextEvent: IParty | null = null;
 	let currentEvent: IParty | null = null;
 
 	onMount(async () => {
 		// case when there is an upcoming event and voting has ended for that event.
-		if ($nextEvent && $nextEvent?.votingEnds < new Date() && isMovieGuard($nextEvent.winner)) {
+		if (nextEvent && new Date(nextEvent?.votingEnds).getTime() < new Date().getTime() && isMovieGuard(nextEvent.winner)) {
 			showModal = true;
-			currentEvent = $nextEvent;
+			currentEvent = nextEvent;
 		} else {
 			const mostRecentEvent = await (await fetch('/api/parties/get-last-ended')).json();
 			const hoursSinceEvent = dayjs().diff(mostRecentEvent.date, 'hours');
@@ -31,7 +31,6 @@
 			showModal = false;
 		}
 	});
-
 	const handleModalDismiss = () => {
 		showModal = false;
 		Cookies.set('winnerSeen', currentEvent?._id ?? '', {

@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import mongoose from 'mongoose';
+import mongoose, { Document }from 'mongoose';
 import type { IMovie } from './movie.schema';
 
-export interface IParty {
+export interface IParty extends Document{
     _id?: string,
     date: Date,
     votingEnds: Date,

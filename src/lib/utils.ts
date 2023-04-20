@@ -31,3 +31,8 @@ export const isContestantGuard = (obj: unknown): obj is IContestant & { movie: I
 	if (!isMovieGuard(movie)) return false;
 	return true;
 };
+
+export const isContestantsGuard = (obj: unknown): obj is IContestant[] => {
+	if (!Array.isArray(obj)) return false;
+	return obj.every(isContestantGuard);
+};
